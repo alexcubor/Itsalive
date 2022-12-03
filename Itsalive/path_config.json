@@ -1,0 +1,43 @@
+{
+	"protocol":
+	{
+		"cerebro": ["ftp:ftp://mycompany.com", "network"],
+		"maya": "network"
+	},
+
+	"project_path": [
+		{
+			"project_name": "",
+			"task_activity": "",
+			"paths": [
+				"Z:/proj_3033",
+				"/server/projects",
+				"/Volumes/projects",
+				"/ftp/projects"
+			]
+		}
+	],
+
+	"file_path": [
+		{
+			"folder_path": "",
+			"task_activity": "",
+			"name": "$(task_name)",
+			"ver_padding": 3,
+			"ver_prefix": "_v",
+			"publish": "$(url[1])/$(url[2])/$(task_activity_name)",
+			"version": "$(url[1])/$(url[2])/$(task_activity_name)/versions"
+		}
+	],
+
+	"soft_folder":
+	{
+		"maya": "3D"
+	},
+
+	"trans_mode":
+	{
+		"cerebro": true,
+		"maya": true
+	}
+}

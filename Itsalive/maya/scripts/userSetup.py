@@ -1,0 +1,1 @@
+import maya.cmds as cmdsimport shelvescmds.evalDeferred('shelves.create()')
