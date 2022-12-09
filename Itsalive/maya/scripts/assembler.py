@@ -25,9 +25,9 @@ def assembly():
 
 
 def import_env():
-    task_data = config.task_data()
-    env_path = os.path.join(task_data["project_path"], task_data["task_type"],
-                            task_data["task_id"], "cache", task_data["task_id"] + "_env.fbx")
+    task_fields = config.task_fields(cmds.file(q=True, sn=True))
+    env_path = os.path.join(config.project_path(), "episodes", task_fields["episode"], task_fields["scene"],
+                            task_fields["shot"], "cache", task_fields["shot"] + "_env.fbx")
     print("[DEBUG] Find cache + %s" % env_path)
     if os.path.isfile(env_path):
         try:
