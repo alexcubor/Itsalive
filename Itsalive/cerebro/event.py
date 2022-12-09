@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 from pathlib import Path
-import config
+try:
+    import config
+except:
+    import sys
+    sys.path.append("Z:/tools/Itsalive")
+    import config
 from mocap import convert_to_25fps
 from mocap import create_character_definition
 
