@@ -1,43 +1,73 @@
 {
-	"protocol":
-	{
-		"cerebro": ["ftp:ftp://mycompany.com", "network"],
-		"maya": "network"
-	},
-
-	"project_path": [
-		{
-			"project_name": "",
-			"task_activity": "",
-			"paths": [
-				"Z:/proj_3033",
-				"/server/projects",
-				"/Volumes/projects",
-				"/ftp/projects"
-			]
-		}
-	],
-
-	"file_path": [
-		{
-			"folder_path": "",
-			"task_activity": "",
-			"name": "$(task_name)",
-			"ver_padding": 3,
-			"ver_prefix": "_v",
-			"publish": "$(url[1])/$(url[2])/$(task_activity_name)",
-			"version": "$(url[1])/$(url[2])/$(task_activity_name)/versions"
-		}
-	],
-
-	"soft_folder":
-	{
-		"maya": "3D"
-	},
-
-	"trans_mode":
-	{
-		"cerebro": true,
-		"maya": true
-	}
+    "file_path": [
+        {
+            "folder_path": "$(url[0])/episodes",
+            "name": "$(task_name)",
+            "publish": "episodes/$(url[2])/$(url[3])/$(url[4])/$(task_activity_name)",
+            "task_activity": "",
+            "ver_padding": 3,
+            "ver_prefix": "_v",
+            "version": "episodes/$(url[2])/$(url[3])/$(url[4])/$(task_activity_name)/work"
+        },
+        {
+            "folder_path": "$(url[0])/assets",
+            "name": "$(task_name)",
+            "publish": "assets/$(url[2])/$(url[3])/$(task_activity_name)",
+            "task_activity": "",
+            "ver_padding": 3,
+            "ver_prefix": "_v",
+            "version": "assets/$(url[2])/$(url[3])/$(task_activity_name)/work"
+        },
+        {
+            "folder_path": "$(url[0])/episodes",
+            "name": "$(task_name)",
+            "publish": "episodes/$(url[2])/$(url[3])/$(url[4])/render/$(task_activity_name)",
+            "task_activity": "maya",
+            "ver_padding": 3,
+            "ver_prefix": "_v",
+            "version": "episodes/$(url[2])/$(url[3])/$(url[4])/render/$(task_activity_name)/work"
+        },
+        {
+            "folder_path": "$(url[0])/episodes",
+            "name": "$(task_name)",
+            "publish": "episodes/$(url[2])/$(url[3])/$(url[4])/render/$(task_activity_name)",
+            "task_activity": "UE",
+            "ver_padding": 3,
+            "ver_prefix": "_v",
+            "version": "episodes/$(url[2])/$(url[3])/$(url[4])/render/$(task_activity_name)/work"
+        }
+    ],
+    "project_path": [
+        {
+            "paths": [
+                "Z:/proj_3033"
+            ],
+            "project_name": "",
+            "task_activity": ""
+        }
+    ],
+    "protocol": {
+        "cerebro": [
+            "network"
+        ],
+        "maya": "network"
+    },
+    "soft_folder": {
+        "maya": "3D"
+    },
+    "trans_mode": {
+        "cerebro": true,
+        "maya": true
+    },
+	"processors":
+    {
+        "maya":
+        {
+            "open_post":
+                {
+                    "script_path": "./path/to/script.py",
+                    "function": "open_post_func"
+                }
+        }
+    }
 }
