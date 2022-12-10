@@ -56,7 +56,7 @@ class FilePath(object):
                 self.version_type = version_type
 
             if not valid_template:  # Если в шаблоне путь не подошёл ни к версии ни к публикации,
-                continue            # переходит к следующему шаблону
+                continue  # переходит к следующему шаблону
 
             # 3) Отсеиваем шаблон пути, если явно указана его активность и она не совпадает с активностью в пути.
             def _check_active():
@@ -106,6 +106,33 @@ class FilePath(object):
             self.fields["name"] = self.cerebro_fields["$(task_name)"]
 
 
+class Template(object):
+    def __init__(self, template_dict):
+        self.dict = template_dict
+        self.task_type = get_task_type(self.dict["folder_path"])
+        publish = self.path_format(self.dict["publish"]).split("/")
+        self.publish_format_cerebro = "/".join([project_path()] + publish + [self.dict["name"]])
+        self.publish_format = self.path_format(self.publish_format_cerebro)
+        version = self.path_format(self.dict["version"]).split("/")
+        self.version_format_cerebro = "/".join([project_path()] + version + [self.dict["name"]])
+        self.version_format = self.path_format(self.version_format_cerebro)
+
+    def path_format(self, template_path):
+        if self.task_type in "asset":
+            template_path = template_path.replace("$(url[2])", "{asset_type}")
+            template_path = template_path.replace("$(url[3])", "{asset_name}")
+        if self.task_type in "episode":
+            template_path = template_path.replace("$(url[2])", "{episode}")
+            template_path = template_path.replace("$(url[3])", "{scene}")
+            template_path = template_path.replace("$(url[4])", "{shot}")
+            template_path = template_path.replace("$(task_activity_name)", "{task_activity_name}")
+            template_path = template_path.replace("$(task_name)", "{name}")
+        return template_path
+
+    def apply_fields_publish(self, fields):
+        return self.publish_format.format(**fields)
+
+
 def task_fields(path):
     return FilePath(path).fields
 
@@ -118,6 +145,30 @@ def project_path():
     config = get_config_json()
     project_path = config["project_path"][0]["paths"][0]
     return project_path
+
+
+def get_task_type(path_or_template_path):
+    if "assets" in path_or_template_path:
+        return "asset"
+    elif "episodes" in path_or_template_path:
+        return "episode"
+    else:
+        return None
+
+
+def find_template(dict_matches):
+    templates = get_config_json()["file_path"]
+    for template in templates:
+        def _compare():
+            for match in dict_matches:
+                if dict_matches[match] != template[match]:
+                    return False
+            return True
+
+        if _compare():
+            return Template(template)
+        else:
+            return None
 
 
 # Проверяет, находитесь ли вы в режиме разработчика.
