@@ -69,3 +69,4 @@ def create():
     if config.is_dev():
         command = "import assembler; from importlib import reload; reload(assembler); assembler.assembly()"
     shelf.addButton(label="Asmbl", icon="bag-dynamic-color.png", command=command)
+    shelf.addButton(label="", icon="star-dynamic-color.png", command="import afanasy; ui = afanasy.UI(); ui.show()")
