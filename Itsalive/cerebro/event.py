@@ -4,7 +4,7 @@ try:
     import config
 except:
     import sys
-    sys.path.append("Z:/tools/Itsalive")
+    sys.path.append(str(Path(__file__).parent.parent))
     import config
 from mocap import convert_to_25fps
 from mocap import create_character_definition

@@ -173,7 +173,7 @@ def find_template(dict_matches):
 
 # Проверяет, находитесь ли вы в режиме разработчика.
 def is_dev():
-    if "Z:" in __file__:
+    if "Z:" in __file__ or "X:" in __file__:
         return False
     else:
         return True
