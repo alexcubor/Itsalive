@@ -35,6 +35,22 @@ class app(object):
         put_env("PYTHONPATH", os.environ['CGRU_LOCATION'] + "/plugins/maya")
         put_env("PYTHONPATH", os.environ['CGRU_LOCATION'] + "/plugins/maya/afanasy")
 
+        def _fix():
+            pyfile = os.environ["MAYA_CGRU_LOCATION"] + "/afanasy/__init__.py"
+            if not os.path.isfile(pyfile):
+                return
+            pyread = open(pyfile, 'r')
+            code = pyread.read()
+            template = """cmd_buffer.append('-proj "%s"' % os.path.normpath(self.project))"""
+            if template not in code:
+                return  # Значит код уже исправлен
+            codefix = code.replace(template, """cmd_buffer.append('-proj "%s"' % self.project)""")
+            pyread.close()
+            pyset = open(pyfile, 'w')
+            pyset.write(codefix)
+            pyset.close()
+        _fix()
+
     # Запуск Maya
     @staticmethod
     def run():
