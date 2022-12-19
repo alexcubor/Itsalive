@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 
 """
-Конвертирует все mov-файлы в полученной папке в 25 кадров/сек в виде png-сиквенции
+Конвертирует все mov-файлы в полученной папке в 24 кадров/сек в виде png-сиквенции
 """
 
 
@@ -22,7 +22,7 @@ def convert(directory=None):
             os.mkdir(path_to_sequence)
             ffmpeg_exe = str(Path((__file__)).parent.parent.parent.joinpath(r"ffmpeg\bin\ffmpeg.exe"))
             print(ffmpeg_exe)
-            subprocess.run([ffmpeg_exe, "-i", mov] + ["-r", "25"] + [
+            subprocess.run([ffmpeg_exe, "-i", mov] + ["-r", "24"] + [
                 path_to_sequence + "/" + name_no_ext + ".%4d" + ".png"])
         sequence_folders.append(path_to_sequence)
     return sequence_folders

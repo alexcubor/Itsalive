@@ -9,7 +9,7 @@ except:
     import sys
     sys.path.append(str(Path(__file__).parent.parent))
     import config
-from mocap import convert_to_25fps
+from mocap import convert_to_24fps
 from mocap import create_character_definition
 
 
@@ -17,8 +17,8 @@ def run(folder=None):
     args = sys.argv
     if not folder:
         folder = args[-1]
-    # Конвертирует все mov-файлы в полученной папке в 25 кадров/сек в виде png-сиквенции
-    sequence_folders = convert_to_25fps.convert(str(folder))
+    # Конвертирует все mov-файлы в полученной папке в 24 кадра/сек в виде png-сиквенции
+    sequence_folders = convert_to_24fps.convert(str(folder))
     # Настраивает fbx-скелет и сохраняет в MA
     maya_scenes = create_character_definition.create_ma(str(folder))
     # Перемещает содержимое в папку шота
