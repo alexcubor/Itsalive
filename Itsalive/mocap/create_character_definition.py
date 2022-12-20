@@ -1,6 +1,14 @@
 import subprocess
 import glob
 import os
+import re
+from pathlib import Path
+try:
+    import config, sys
+except:
+    import sys
+    sys.path.append(str(Path(__file__).parent.parent))
+    import config
 
 
 def create_ma(directory):
@@ -9,15 +17,26 @@ def create_ma(directory):
     for num, fbx in enumerate(fbx_files):
         idx = num + 1
         ma = fbx.replace(".fbx", ".ma")
+        # Если в файле указаны теги шота, перемещает содержимое в папку шота
+        folder = ma.replace("\\", "/").split("/")[-1]
+        group_names = re.match(".*(?P<episode>ep\w+).+(?P<scene>sc\w+).+(?P<shot>sh[0-9&a-z&A-Z]+)", folder)
+        if group_names:
+            template = config.find_template({"folder_path": "$(url[0])/episodes", "task_activity": ""})
+            fields = group_names.groupdict()
+            if "sc" not in fields["shot"]:
+                fields["shot"] = fields["scene"] + "_" + fields["shot"]
+            fields.update(
+                {"project_path": config.project_path(), "task_activity_name": "mocap_data", "name": folder})
+            ma = template.apply_fields_publish(fields)
         if os.path.isfile(ma):
-            ma_files.append(ma)
+            print("[Itsalive] Файл %s уже существует!" % ma)
             continue
         command = "import pymel.core as pm; "
         command += "import maya.cmds as cmds; "
         command += "import maya.mel as mm; "
         command += "cmds.file(new=True, force=True); "
         command += "cmds.currentUnit(time='240fps'); "
-        command += "cmds.file('%s', i=True); " % fbx
+        command += "cmds.file(r'%s', i=True); " % fbx
         command += "cmds.select('Hips', r=1); "
         command += "mm.eval('hikCreateDefinition'); "
         # command += "mm.eval('select -r Hips'; "
@@ -47,6 +66,13 @@ def create_ma(directory):
         command += "mm.eval('setCharacterObject(\"Spine3\", \"Character%s\", 25, 0)'); " % idx
         command += "cmds.file(rename='%s'); " % ma
         command += "cmds.file(save=True); "
-        subprocess.run([r"C:\Program Files\Autodesk\Maya2022\bin\mayapy.exe", "-c", command])
+        out_command = [r"C:\Program Files\Autodesk\Maya2022\bin\mayapy.exe", "-c", command]
+        subprocess.run(out_command)
+        if group_names:
+            print("[Itsalive] Успех! Файл сохранён в %s" % ma)
+        else:
+            print("[Itsalive] %s успех! Если хотите что бы обработанный файл переместился в шоты, "
+                  "укажите в его имени эпизод, сцену и шот. Например: eva_ep01_sc01_sh01.bla или "
+                  "eva_ep01.sc01-sh01_vvv." % ma)
         ma_files.append(ma)
     return ma_files
