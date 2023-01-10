@@ -69,4 +69,8 @@ def create():
     if config.is_dev():
         command = "import assembler; from importlib import reload; reload(assembler); assembler.assembly()"
     shelf.addButton(label="Asmbl", icon="bag-dynamic-color.png", command=command)
+    command = "import render_stats; wind = render_stats.Batch(); wind.show()"
+    if config.is_dev():
+        command = "import render_stats; from importlib import reload; reload(render_stats); wind = render_stats.Batch(); wind.show()"
+    shelf.addButton(label="", icon="minecraft-dynamic-color.png", command=command)
     shelf.addButton(label="", icon="star-dynamic-color.png", command="import afanasy; ui = afanasy.UI(); ui.show()")
