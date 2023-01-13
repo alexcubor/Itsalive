@@ -1,0 +1,344 @@
+{
+    "../../__pycache__": {
+        "name": "__pycache__",
+        "path": "../../__pycache__",
+        "type": "Folder",
+        "folder": "../..",
+        "category": "studiolibrary-2.9.6.b3",
+        "modified": 1673361357.1760213,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../config": {
+        "name": "config",
+        "path": "../../config",
+        "type": "Folder",
+        "folder": "../..",
+        "category": "studiolibrary-2.9.6.b3",
+        "modified": 1673361284.8993516,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src": {
+        "name": "src",
+        "path": "../../src",
+        "type": "Folder",
+        "folder": "../..",
+        "category": "studiolibrary-2.9.6.b3",
+        "modified": 1673361287.2713351,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/mutils": {
+        "name": "mutils",
+        "path": "../../src/mutils",
+        "type": "Folder",
+        "folder": "../../src",
+        "category": "src",
+        "modified": 1673361360.1325092,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/mutils/__pycache__": {
+        "name": "__pycache__",
+        "path": "../../src/mutils/__pycache__",
+        "type": "Folder",
+        "folder": "../../src/mutils",
+        "category": "mutils",
+        "modified": 1673361360.321926,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/mutils/gui": {
+        "name": "gui",
+        "path": "../../src/mutils/gui",
+        "type": "Folder",
+        "folder": "../../src/mutils",
+        "category": "mutils",
+        "modified": 1673361360.275116,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/mutils/gui/__pycache__": {
+        "name": "__pycache__",
+        "path": "../../src/mutils/gui/__pycache__",
+        "type": "Folder",
+        "folder": "../../src/mutils/gui",
+        "category": "gui",
+        "modified": 1673361360.3010314,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/mutils/tests": {
+        "name": "tests",
+        "path": "../../src/mutils/tests",
+        "type": "Folder",
+        "folder": "../../src/mutils",
+        "category": "mutils",
+        "modified": 1673361285.2514372,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/mutils/tests/data": {
+        "name": "data",
+        "path": "../../src/mutils/tests/data",
+        "type": "Folder",
+        "folder": "../../src/mutils/tests",
+        "category": "tests",
+        "modified": 1673361285.8132925,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/mutils/tests/data/animation.anim": {
+        "name": "animation.anim",
+        "path": "../../src/mutils/tests/data/animation.anim",
+        "type": ".anim",
+        "folder": "../../src/mutils/tests/data",
+        "category": "data",
+        "modified": 1624538317.0,
+        "__class__": "studiolibrarymaya.animitem.AnimItem"
+    },
+    "../../src/mutils/tests/data/test_bake_connected.anim": {
+        "name": "test_bake_connected.anim",
+        "path": "../../src/mutils/tests/data/test_bake_connected.anim",
+        "type": ".anim",
+        "folder": "../../src/mutils/tests/data",
+        "category": "data",
+        "modified": 1673361285.532569,
+        "__class__": "studiolibrarymaya.animitem.AnimItem"
+    },
+    "../../src/mutils/tests/data/test_load_insert.anim": {
+        "name": "test_load_insert.anim",
+        "path": "../../src/mutils/tests/data/test_load_insert.anim",
+        "type": ".anim",
+        "folder": "../../src/mutils/tests/data",
+        "category": "data",
+        "modified": 1673361285.591412,
+        "__class__": "studiolibrarymaya.animitem.AnimItem"
+    },
+    "../../src/mutils/tests/data/test_load_replace.anim": {
+        "name": "test_load_replace.anim",
+        "path": "../../src/mutils/tests/data/test_load_replace.anim",
+        "type": ".anim",
+        "folder": "../../src/mutils/tests/data",
+        "category": "data",
+        "modified": 1673361285.657237,
+        "__class__": "studiolibrarymaya.animitem.AnimItem"
+    },
+    "../../src/mutils/tests/data/test_load_replace_completely.anim": {
+        "name": "test_load_replace_completely.anim",
+        "path": "../../src/mutils/tests/data/test_load_replace_completely.anim",
+        "type": ".anim",
+        "folder": "../../src/mutils/tests/data",
+        "category": "data",
+        "modified": 1673361285.686155,
+        "__class__": "studiolibrarymaya.animitem.AnimItem"
+    },
+    "../../src/mutils/tests/data/test_non_unique_names.pose": {
+        "name": "test_non_unique_names.pose",
+        "path": "../../src/mutils/tests/data/test_non_unique_names.pose",
+        "type": ".pose",
+        "folder": "../../src/mutils/tests/data",
+        "category": "data",
+        "modified": 1624538317.0,
+        "__class__": "studiolibrarymaya.poseitem.PoseItem"
+    },
+    "../../src/mutils/tests/data/test_older_version.anim": {
+        "name": "test_older_version.anim",
+        "path": "../../src/mutils/tests/data/test_older_version.anim",
+        "type": ".anim",
+        "folder": "../../src/mutils/tests/data",
+        "category": "data",
+        "modified": 1673361285.7943394,
+        "__class__": "studiolibrarymaya.animitem.AnimItem"
+    },
+    "../../src/mutils/tests/data/test_pose.pose": {
+        "name": "test_pose.pose",
+        "path": "../../src/mutils/tests/data/test_pose.pose",
+        "type": ".pose",
+        "folder": "../../src/mutils/tests/data",
+        "category": "data",
+        "modified": 1624538317.0,
+        "__class__": "studiolibrarymaya.poseitem.PoseItem"
+    },
+    "../../src/mutils/tests/data/test_poseplugin.pose": {
+        "name": "test_poseplugin.pose",
+        "path": "../../src/mutils/tests/data/test_poseplugin.pose",
+        "type": ".pose",
+        "folder": "../../src/mutils/tests/data",
+        "category": "data",
+        "modified": 1673361285.8192766,
+        "__class__": "studiolibrarymaya.poseitem.PoseItem"
+    },
+    "../../src/studiolibrary": {
+        "name": "studiolibrary",
+        "path": "../../src/studiolibrary",
+        "type": "Folder",
+        "folder": "../../src",
+        "category": "src",
+        "modified": 1673361359.3305843,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/studiolibrary/__pycache__": {
+        "name": "__pycache__",
+        "path": "../../src/studiolibrary/__pycache__",
+        "type": "Folder",
+        "folder": "../../src/studiolibrary",
+        "category": "studiolibrary",
+        "modified": 1673361360.3707945,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/studiolibrary/config": {
+        "name": "config",
+        "path": "../../src/studiolibrary/config",
+        "type": "Folder",
+        "folder": "../../src/studiolibrary",
+        "category": "studiolibrary",
+        "modified": 1673361286.0178773,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/studiolibrary/resource": {
+        "name": "resource",
+        "path": "../../src/studiolibrary/resource",
+        "type": "Folder",
+        "folder": "../../src/studiolibrary",
+        "category": "studiolibrary",
+        "modified": 1673361286.2157907,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/studiolibrary/resource/css": {
+        "name": "css",
+        "path": "../../src/studiolibrary/resource/css",
+        "type": "Folder",
+        "folder": "../../src/studiolibrary/resource",
+        "category": "resource",
+        "modified": 1673361286.0527835,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/studiolibrary/resource/fonts": {
+        "name": "fonts",
+        "path": "../../src/studiolibrary/resource/fonts",
+        "type": "Folder",
+        "folder": "../../src/studiolibrary/resource",
+        "category": "resource",
+        "modified": 1673361286.210803,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/studiolibrary/resource/icons": {
+        "name": "icons",
+        "path": "../../src/studiolibrary/resource/icons",
+        "type": "Folder",
+        "folder": "../../src/studiolibrary/resource",
+        "category": "resource",
+        "modified": 1673361286.6473417,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/studiolibrary/widgets": {
+        "name": "widgets",
+        "path": "../../src/studiolibrary/widgets",
+        "type": "Folder",
+        "folder": "../../src/studiolibrary",
+        "category": "studiolibrary",
+        "modified": 1673361359.5428565,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/studiolibrary/widgets/__pycache__": {
+        "name": "__pycache__",
+        "path": "../../src/studiolibrary/widgets/__pycache__",
+        "type": "Folder",
+        "folder": "../../src/studiolibrary/widgets",
+        "category": "widgets",
+        "modified": 1673361359.9957964,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/studiolibrary/widgets/itemswidget": {
+        "name": "itemswidget",
+        "path": "../../src/studiolibrary/widgets/itemswidget",
+        "type": "Folder",
+        "folder": "../../src/studiolibrary/widgets",
+        "category": "widgets",
+        "modified": 1673361359.7483058,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/studiolibrary/widgets/itemswidget/__pycache__": {
+        "name": "__pycache__",
+        "path": "../../src/studiolibrary/widgets/itemswidget/__pycache__",
+        "type": "Folder",
+        "folder": "../../src/studiolibrary/widgets/itemswidget",
+        "category": "itemswidget",
+        "modified": 1673361359.8851385,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/studiolibrary/widgets/sidebarwidget": {
+        "name": "sidebarwidget",
+        "path": "../../src/studiolibrary/widgets/sidebarwidget",
+        "type": "Folder",
+        "folder": "../../src/studiolibrary/widgets",
+        "category": "widgets",
+        "modified": 1673361359.688467,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/studiolibrary/widgets/sidebarwidget/__pycache__": {
+        "name": "__pycache__",
+        "path": "../../src/studiolibrary/widgets/sidebarwidget/__pycache__",
+        "type": "Folder",
+        "folder": "../../src/studiolibrary/widgets/sidebarwidget",
+        "category": "sidebarwidget",
+        "modified": 1673361359.729357,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/studiolibrarymaya": {
+        "name": "studiolibrarymaya",
+        "path": "../../src/studiolibrarymaya",
+        "type": "Folder",
+        "folder": "../../src",
+        "category": "src",
+        "modified": 1673361360.0666058,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/studiolibrarymaya/__pycache__": {
+        "name": "__pycache__",
+        "path": "../../src/studiolibrarymaya/__pycache__",
+        "type": "Folder",
+        "folder": "../../src/studiolibrarymaya",
+        "category": "studiolibrarymaya",
+        "modified": 1673361360.3847573,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/studiolibrarymaya/icons": {
+        "name": "icons",
+        "path": "../../src/studiolibrarymaya/icons",
+        "type": "Folder",
+        "folder": "../../src/studiolibrarymaya",
+        "category": "studiolibrarymaya",
+        "modified": 1673361287.1682186,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/studioqt": {
+        "name": "studioqt",
+        "path": "../../src/studioqt",
+        "type": "Folder",
+        "folder": "../../src",
+        "category": "src",
+        "modified": 1673361359.3445904,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/studioqt/__pycache__": {
+        "name": "__pycache__",
+        "path": "../../src/studioqt/__pycache__",
+        "type": "Folder",
+        "folder": "../../src/studioqt",
+        "category": "studioqt",
+        "modified": 1673361359.4279625,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/studiovendor": {
+        "name": "studiovendor",
+        "path": "../../src/studiovendor",
+        "type": "Folder",
+        "folder": "../../src",
+        "category": "src",
+        "modified": 1673361359.3495347,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    },
+    "../../src/studiovendor/__pycache__": {
+        "name": "__pycache__",
+        "path": "../../src/studiovendor/__pycache__",
+        "type": "Folder",
+        "folder": "../../src/studiovendor",
+        "category": "studiovendor",
+        "modified": 1673361359.4070158,
+        "__class__": "studiolibrary.folderitem.FolderItem"
+    }
+}
