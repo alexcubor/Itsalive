@@ -3,6 +3,8 @@ import os
 import sys
 import platform
 import subprocess
+from pathlib import Path
+import argparse
 
 """
 Через этот скрипт запускается Maya с инструментарием Itsalive
@@ -17,7 +19,10 @@ class app(object):
         os.environ["MAYA_LOCATION"] = maya_locations[platform.system()]
         put_env("PATH", os.environ["MAYA_LOCATION"] + "/bin")
         os.environ["MAYA_MODULE_PATH"] = os.path.dirname(__file__)
+        self.projects_directory = "//alpha/projects"
+        self.project_name = self.get_project_name()
         self.install_cgru()
+        print(str(Path(os.path.dirname(__file__)).parent.parent).replace("\\", "/") + "/Studio Library 2.9.6.b3/install.mel")
 
     @staticmethod
     def install_cgru():
@@ -50,6 +55,16 @@ class app(object):
             pyset.write(codefix)
             pyset.close()
         _fix()
+
+    @staticmethod
+    def get_project_name():
+        parser = argparse.ArgumentParser()
+        parser.add_argument("-p", help="Project.")
+        args, unknown = parser.parse_known_args()
+        if args.p:
+            os.environ["PROJECT_NAME"] = args.p
+        print("[Itsalive] Project name: " + args.p)
+        return args.p
 
     # Запуск Maya
     @staticmethod

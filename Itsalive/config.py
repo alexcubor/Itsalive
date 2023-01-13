@@ -142,9 +142,15 @@ def task_cerebro_fields(path):
 
 
 def project_path():
-    config = get_config_json()
-    project_path = config["project_path"][0]["paths"][0]
-    return project_path
+    if os.getenv("PROJECT_NAME"):
+        return os.path.join("//alpha/projects", os.getenv("PROJECT_NAME")).replace("\\", "/")
+    else:
+        config = get_config_json()
+        project_path = config["project_path"][0]["paths"][0]
+        return project_path
+
+def library_path():
+    return os.path.join(project_path(), "library").replace("\\", "/")
 
 
 def get_task_type(path_or_template_path):

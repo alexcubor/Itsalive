@@ -65,6 +65,25 @@ def create():
     shelf = _shelf()
     shelf.name = "Itsalive"
     shelf.build()
+    command = r"""
+# -----------------------------------
+# Studio Library
+# www.studiolibrary.com
+# -----------------------------------
+
+import os
+import sys
+    
+if not os.path.exists(r'C:\Users\sdiz\YandexDisk-sdiz\Projects archive\Itsavile\tools\Studio Library 2.9.6.b3\src'):
+    raise IOError(r'The source path "C:\Users\sdiz\YandexDisk-sdiz\Projects archive\Itsavile\tools\Studio Library 2.9.6.b3\src" does not exist!')
+    
+if r'C:\Users\sdiz\YandexDisk-sdiz\Projects archive\Itsavile\tools\Studio Library 2.9.6.b3\src' not in sys.path:
+    sys.path.insert(0, r'C:\Users\sdiz\YandexDisk-sdiz\Projects archive\Itsavile\tools\Studio Library 2.9.6.b3\src')
+    
+import studiolibrary
+studiolibrary.main()
+    """
+    shelf.addButton(label="Library", icon="cube-dynamic-color.png", command=command)
     command = "import assembler; assembler.assembly()"
     if config.is_dev():
         command = "import assembler; from importlib import reload; reload(assembler); assembler.assembly()"
@@ -72,5 +91,9 @@ def create():
     command = "import render_stats; wind = render_stats.Batch(); wind.show()"
     if config.is_dev():
         command = "import render_stats; from importlib import reload; reload(render_stats); wind = render_stats.Batch(); wind.show()"
-    shelf.addButton(label="", icon="minecraft-dynamic-color.png", command=command)
-    shelf.addButton(label="", icon="star-dynamic-color.png", command="import afanasy; ui = afanasy.UI(); ui.show()")
+    shelf.addButton(label="RStats", icon="minecraft-dynamic-color.png", command=command)
+    command = "import render; render.RenderSetup().import_settings()"
+    if config.is_dev():
+        command = "import render; from importlib import reload; reload(render); render.RenderSetup().import_settings()"
+    shelf.addButton(label="Settings", icon="camera-dynamic-color.png", command=command)
+    shelf.addButton(label="Afanasy", icon="star-dynamic-color.png", command="import afanasy; ui = afanasy.UI(); ui.show()")

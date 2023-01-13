@@ -9,7 +9,7 @@ class Batch(QtWidgets.QWidget):
         QtWidgets.QWidget.__init__(self, parent, QtCore.Qt.WindowStaysOnTopHint)
         self.main_layout = QtWidgets.QVBoxLayout(self)
         self.setGeometry(500, 300, 260, 110)
-        self.setWindowTitle("It's a Render Stats")
+        self.setWindowTitle("It's Render Stats")
 
         self.visibility_parms = ["primaryVisibility", "castsShadows",
                                  "aiVisibleInDiffuseReflection", "aiVisibleInSpecularReflection",
