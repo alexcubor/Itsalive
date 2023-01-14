@@ -65,24 +65,7 @@ def create():
     shelf = _shelf()
     shelf.name = "Itsalive"
     shelf.build()
-    command = r"""
-# -----------------------------------
-# Studio Library
-# www.studiolibrary.com
-# -----------------------------------
-
-import os
-import sys
-    
-if not os.path.exists(r'C:\Users\sdiz\YandexDisk-sdiz\Projects archive\Itsavile\tools\Studio Library 2.9.6.b3\src'):
-    raise IOError(r'The source path "C:\Users\sdiz\YandexDisk-sdiz\Projects archive\Itsavile\tools\Studio Library 2.9.6.b3\src" does not exist!')
-    
-if r'C:\Users\sdiz\YandexDisk-sdiz\Projects archive\Itsavile\tools\Studio Library 2.9.6.b3\src' not in sys.path:
-    sys.path.insert(0, r'C:\Users\sdiz\YandexDisk-sdiz\Projects archive\Itsavile\tools\Studio Library 2.9.6.b3\src')
-    
-import studiolibrary
-studiolibrary.main()
-    """
+    command = "import studiolibrary; studiolibrary.main()"
     shelf.addButton(label="Library", icon="cube-dynamic-color.png", command=command)
     command = "import assembler; assembler.assembly()"
     if config.is_dev():

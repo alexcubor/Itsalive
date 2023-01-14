@@ -4,8 +4,9 @@
 Необходимый модуль для работы с файлами и путями вне Cerebro, по скольку не у всех будет доступен этот менеджер задач.
 """
 
-import json
+import platform
 import os
+import json
 from pathlib import Path
 
 
@@ -141,13 +142,22 @@ def task_cerebro_fields(path):
     return FilePath(path).cerebro_fields
 
 
+def server_path():
+    return {"Windows": "//alpha", "Linux": "/alpha"}[platform.system()]
+
+
+def projects_path():
+    os.path.join(server_path(), "projects")
+
+
 def project_path():
     if os.getenv("PROJECT_NAME"):
-        return os.path.join("//alpha/projects", os.getenv("PROJECT_NAME")).replace("\\", "/")
+        return os.path.join(server_path(), "projects", os.getenv("PROJECT_NAME")).replace("\\", "/")
     else:
         config = get_config_json()
         project_path = config["project_path"][0]["paths"][0]
         return project_path
+
 
 def library_path():
     return os.path.join(project_path(), "library").replace("\\", "/")
@@ -179,7 +189,7 @@ def find_template(dict_matches):
 
 # Проверяет, находитесь ли вы в режиме разработчика.
 def is_dev():
-    if "/alpha/" in __file__.replace("\\", "/"):
+    if server_path() + "/" in __file__.replace("\\", "/"):
         return False
     else:
         return True
