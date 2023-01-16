@@ -21,9 +21,11 @@ class app(object):
         os.environ["MAYA_LOCATION"] = maya_locations[platform.system()]
         put_env("PATH", os.environ["MAYA_LOCATION"] + "/bin")
         os.environ["MAYA_MODULE_PATH"] = os.path.dirname(__file__)
+        self.plugins_path = os.path.dirname(__file__) + "/plugins"
         self.project_name = self.get_project_name()
         self.install_cgru()
         self.install_studio_library()
+        self.install_megascan_livelink()
 
     @staticmethod
     def install_cgru():
@@ -43,11 +45,6 @@ class app(object):
         put_env("PYTHONPATH", os.environ['CGRU_LOCATION'] + "/plugins/maya/afanasy")
         print("[It's alive] Install CGRU " + cgru_version)
 
-    @staticmethod
-    def install_studio_library():
-        put_env("PYTHONPATH", os.environ["TOOLS_PATH"] + "/Studio Library 2.9.6.b3/src")
-        print("[It's alive] Install Studio Library 2.9.6.b3")
-
         def _fix():
             pyfile = os.environ["MAYA_CGRU_LOCATION"] + "/afanasy/__init__.py"
             if not os.path.isfile(pyfile):
@@ -63,6 +60,15 @@ class app(object):
             pyset.write(codefix)
             pyset.close()
         _fix()
+
+    @staticmethod
+    def install_studio_library():
+        put_env("PYTHONPATH", os.environ["TOOLS_PATH"] + "/Studio Library 2.9.6.b3/src")
+        print("[It's alive] Install Studio Library 2.9.6.b3")
+
+    def install_megascan_livelink(self):
+        put_env("MAYA_MODULE_PATH", self.plugins_path + "/MSLiveLink")
+        print("[It's alive] Install MegaScan LiveLink 7.0")
 
     @staticmethod
     def get_project_name():
