@@ -36,7 +36,7 @@ class RenderSetup(QtWidgets.QWidget):  # TODO Add exporter render settings for e
             if aov_uv:
                 if not aov_uv.defaultValue.connections():
                     utility = pm.ls("aiUtility1")[0] if pm.ls("aiUtility1") else pm.createNode("aiUtility", name="aiUtility1")
-                    pm.connectAttr(utility.outColor, aov_uv.defaultValue)
+                    pm.connectAttr(utility.outColor, aov_uv.defaultValue, f=True)
                     pm.Attribute(utility.shadeMode).set(2)
                     pm.Attribute(utility.colorMode).set(5)
         _aov_uv()
@@ -47,28 +47,31 @@ class RenderSetup(QtWidgets.QWidget):  # TODO Add exporter render settings for e
                 if not aov_crypto_mat.defaultValue.connections():
                     crypto = pm.ls("_aov_cryptomatte")[0] if pm.ls("_aov_cryptomatte") else pm.createNode("cryptomatte",
                                                                                                name="_aov_cryptomatte")
-                    pm.connectAttr(crypto.outColor, aov_crypto_mat.defaultValue)
+                    pm.connectAttr(crypto.outColor, aov_crypto_mat.defaultValue, f=True)
             aov_crypto_obj = pm.ls("aiAOV_crypto_object")[0] if pm.ls("aiAOV_crypto_object") else None
             if aov_crypto_obj:
                 if not aov_crypto_obj.defaultValue.connections():
                     crypto = pm.ls("_aov_cryptomatte")[0] if pm.ls("_aov_cryptomatte") else pm.createNode("cryptomatte",
                                                                                                name="_aov_cryptomatte")
-                    pm.connectAttr(crypto.outColor, aov_crypto_mat.defaultValue)
+                    pm.connectAttr(crypto.outColor, aov_crypto_mat.defaultValue, f=True)
         _aov_crypto()
 
         def _aov_position():
             aov = pm.ls("aiAOV_position")[0] if pm.ls("aiAOV_position") else None
             if aov:
                 if not aov.defaultValue.connections():
-                    space_tr = pm.createNode("aiSpaceTransform", name="aiSpaceTransform_position")
+                    space_tr = pm.PyNode("aiSpaceTransform_position") if pm.ls("aiSpaceTransform_position") else \
+                        pm.createNode("aiSpaceTransform", name="aiSpaceTransform_position")
                     pm.Attribute(space_tr.to).set(2)
-                    pm.connectAttr(space_tr.outValue, aov.defaultValue)
-                    state = pm.createNode("aiSpaceTransform", name="aiSpaceTransform_position")
-                    pm.Attribute(space_tr.variable).set(3)
-                    pm.connectAttr(state.outValue, space_tr.input)
-                    filter = pm.createNode("aiAOVFilter", name="aiAOVFilter_closest")
+                    pm.connectAttr(space_tr.outValue, aov.defaultValue, f=True)
+                    state = pm.PyNode("aiStateVector_position") if pm.ls("aiStateVector_position") else \
+                        pm.createNode("aiStateVector", name="aiStateVector_position")
+                    pm.Attribute(state.variable).set(3)
+                    pm.connectAttr(state.outValue, space_tr.input, f=True)
+                    filter = pm.PyNode("aiAOVFilter_closest") if pm.ls("aiAOVFilter_closest") else \
+                        pm.createNode("aiAOVFilter", name="aiAOVFilter_closest")
                     pm.Attribute(filter.aiTranslator).set("closest")
-                    pm.connectAttr(filter.message, aov.outputs[0].filter)
+                    pm.connectAttr(filter.message, pm.Attribute(aov.name() + ".outputs")[0].filter, f=True)
         _aov_position()
 
 
