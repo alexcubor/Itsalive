@@ -1,0 +1,4 @@
+
+/.nuke/init.py
+
+nuke.pluginAddPath("bah_rnd")

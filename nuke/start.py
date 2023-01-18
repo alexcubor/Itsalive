@@ -24,6 +24,7 @@ class App(object):
         cgru_version = "3.3.0"
         os.environ['CGRU_LOCATION'] = "C:/cgru." + cgru_version
         put_env("NUKE_PATH", os.environ['CGRU_LOCATION'] + "/plugins/nuke")
+        put_env("NUKE_PATH", os.path.dirname(__file__))
         put_env("NUKE_CGRU_PATH", os.environ['CGRU_LOCATION'] + "/plugins/nuke")
         put_env("PYTHONPATH", os.environ['NUKE_CGRU_PATH'])
         put_env("PYTHONPATH", os.environ["NUKE_CGRU_PATH"] + "/afanasy")
