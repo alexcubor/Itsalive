@@ -25,9 +25,8 @@ class RenderSetup(QtWidgets.QWidget):  # TODO Add exporter render settings for e
         context = config.FilePath(cmds.file(q=True, sn=True))
         if context.fields:
             context.fields["task_activity_name"] = "render"
-            name = context.fields["name"].rsplit(".", 1)[0]
             context.fields["name"] = "maya"
-            image_path = config.Template(context.template).apply_fields_publish(context.fields) + "/v001/" + name
+            image_path = config.Template(context.template).apply_fields_publish(context.fields) + "/v001/" + context.fields["shot"]
             #cmds.workspace(fileRule=['images', image_path])
             pm.Attribute("defaultRenderGlobals.imageFilePrefix").set(image_path)
 
