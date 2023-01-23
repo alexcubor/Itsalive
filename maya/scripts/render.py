@@ -15,7 +15,7 @@ class RenderSetup(QtWidgets.QWidget):  # TODO Add exporter render settings for e
         self.main_layout = QtWidgets.QVBoxLayout(self)
         self.setGeometry(500, 300, 260, 110)
         self.setWindowTitle("It's Render Settings")
-        self.preset_directory = os.path.join(config.library_path(), "maya", "presets")
+        self.preset_directory = os.path.join(config.library_path(), "maya", "presets").replace("\\", "/")
 
     def import_settings(self):
         render_settings = self.preset_directory + "/render_settings.json"
@@ -26,7 +26,7 @@ class RenderSetup(QtWidgets.QWidget):  # TODO Add exporter render settings for e
         if context.fields:
             context.fields["task_activity_name"] = "render"
             context.fields["name"] = "maya"
-            image_path = config.Template(context.template).apply_fields_publish(context.fields) + "/v001/<RenderLayer>/" + context.fields["shot"]
+            image_path = config.Template(context.template).apply_fields_publish(context.fields) + "/v001/<RenderLayer>/<RenderPass>/" + context.fields["shot"]
             #cmds.workspace(fileRule=['images', image_path])
             pm.Attribute("defaultRenderGlobals.imageFilePrefix").set(image_path)
 
