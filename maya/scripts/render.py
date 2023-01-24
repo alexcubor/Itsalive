@@ -19,14 +19,17 @@ class RenderSetup(QtWidgets.QWidget):  # TODO Add exporter render settings for e
 
     def import_settings(self):
         render_settings = self.preset_directory + "/render_settings.json"
-        self.import_json(render_settings)
+        try:
+            self.import_json(render_settings)
+        except:
+            print("[It's alive] Error import render_settings preset!")
 
         # Установка путей под шот
         context = config.FilePath(cmds.file(q=True, sn=True))
         if context.fields:
             context.fields["task_activity_name"] = "render"
             context.fields["name"] = "maya"
-            image_path = config.Template(context.template).apply_fields_publish(context.fields) + "/v001/<RenderLayer>/<RenderPass>/" + context.fields["shot"]
+            image_path = config.Template(context.template).apply_fields_publish(context.fields) + "/v001/<RenderLayer>/<RenderPass>/" + context.fields["shot"] + "_<RenderPass>"
             #cmds.workspace(fileRule=['images', image_path])
             pm.Attribute("defaultRenderGlobals.imageFilePrefix").set(image_path)
 
