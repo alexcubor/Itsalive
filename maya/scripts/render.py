@@ -55,7 +55,7 @@ class RenderSetup(QtWidgets.QWidget):  # TODO Add exporter render settings for e
                 if not aov_crypto_obj.defaultValue.connections():
                     crypto = pm.ls("_aov_cryptomatte")[0] if pm.ls("_aov_cryptomatte") else pm.createNode("cryptomatte",
                                                                                                name="_aov_cryptomatte")
-                    pm.connectAttr(crypto.outColor, aov_crypto_mat.defaultValue, f=True)
+                    pm.connectAttr(crypto.outColor, aov_crypto_obj.defaultValue, f=True)
         _aov_crypto()
 
         def _aov_position():
