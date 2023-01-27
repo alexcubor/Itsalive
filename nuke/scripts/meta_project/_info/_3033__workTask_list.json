@@ -1,0 +1,412 @@
+[
+    {
+        "iEp": "ep00",
+        "iSc": "sc00",
+        "iSh": "sh000"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh010"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh020"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh030"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh040"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh050"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh055"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh060"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh070"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh080"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh090"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh100"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh110"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh120"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh130"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh140"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh150"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh160"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh165"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh170"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh180"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh190"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh200"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh210"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh220"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh230"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh240"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh241"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh242"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh243"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh244"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh245"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh246"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh250"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh260"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh261"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh262"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh270"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh280"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh285"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh290"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh295"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc01",
+        "iSh": "sh300"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh010"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh020"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh030"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh040"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh050"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh060"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh070"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh080"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh090"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh100"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh110"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh120"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh121"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh130"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh140"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh150"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh160"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh170"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh180"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh181"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh190"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh200"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh210"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh220"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh230"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc02",
+        "iSh": "sh240"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc03",
+        "iSh": "sh010"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc04",
+        "iSh": "sh010"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc04",
+        "iSh": "sh020"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc04",
+        "iSh": "sh030"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc04",
+        "iSh": "sh040"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc04",
+        "iSh": "sh050"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc04",
+        "iSh": "sh060"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc04",
+        "iSh": "sh070"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc04",
+        "iSh": "sh080"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc05",
+        "iSh": "sh010"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc05",
+        "iSh": "sh020"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc05",
+        "iSh": "sh030"
+    },
+    {
+        "iEp": "ep01",
+        "iSc": "sc05",
+        "iSh": "sh040"
+    }
+]
