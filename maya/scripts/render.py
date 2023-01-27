@@ -15,19 +15,21 @@ class RenderSetup(QtWidgets.QWidget):  # TODO Add exporter render settings for e
         self.main_layout = QtWidgets.QVBoxLayout(self)
         self.setGeometry(500, 300, 260, 110)
         self.setWindowTitle("It's Render Settings")
-        self.preset_directory = os.path.join(config.library_path(), "maya", "presets")
+        self.preset_directory = os.path.join(config.library_path(), "maya", "presets").replace("\\", "/")
 
     def import_settings(self):
         render_settings = self.preset_directory + "/render_settings.json"
-        self.import_json(render_settings)
+        try:
+            self.import_json(render_settings)
+        except:
+            print("[It's alive] Error import render_settings preset!")
 
         # Установка путей под шот
         context = config.FilePath(cmds.file(q=True, sn=True))
         if context.fields:
             context.fields["task_activity_name"] = "render"
-            name = context.fields["name"].rsplit(".", 1)[0]
             context.fields["name"] = "maya"
-            image_path = config.Template(context.template).apply_fields_publish(context.fields) + "/v001/" + name
+            image_path = config.Template(context.template).apply_fields_publish(context.fields) + "/v001/<RenderLayer>/<RenderPass>/" + context.fields["shot"] + "_<RenderPass>"
             #cmds.workspace(fileRule=['images', image_path])
             pm.Attribute("defaultRenderGlobals.imageFilePrefix").set(image_path)
 
@@ -53,7 +55,7 @@ class RenderSetup(QtWidgets.QWidget):  # TODO Add exporter render settings for e
                 if not aov_crypto_obj.defaultValue.connections():
                     crypto = pm.ls("_aov_cryptomatte")[0] if pm.ls("_aov_cryptomatte") else pm.createNode("cryptomatte",
                                                                                                name="_aov_cryptomatte")
-                    pm.connectAttr(crypto.outColor, aov_crypto_mat.defaultValue, f=True)
+                    pm.connectAttr(crypto.outColor, aov_crypto_obj.defaultValue, f=True)
         _aov_crypto()
 
         def _aov_position():
@@ -73,6 +75,29 @@ class RenderSetup(QtWidgets.QWidget):  # TODO Add exporter render settings for e
                     pm.Attribute(filter.aiTranslator).set("closest")
                     pm.connectAttr(filter.message, pm.Attribute(aov.name() + ".outputs")[0].filter, f=True)
         _aov_position()
+
+        def _add_denoiser():
+            denoiser = pm.PyNode("aiImagerDenoiserNoice1") if pm.ls("aiImagerDenoiserNoice1") else \
+                        pm.createNode("aiImagerDenoiserNoice", name="aiImagerDenoiserNoice1")
+            pm.connectAttr("aiImagerDenoiserNoice1.message", "defaultArnoldRenderOptions.imagers[0]", f=True)
+            pm.Attribute(denoiser.variance).set(0.1)
+            pm.Attribute(denoiser.outputSuffix).set("_denoise")
+            aov_selection = "RGBA or diffuse_direct or diffuse_indirect or specular or sss"
+            def _get_light_groups():
+                # loop over all light groups in the scene
+                lights = cmds.ls(exactType=['pointLight', 'directionalLight', 'spotLight', 'areaLight', 'aiAreaLight',
+                                            'aiSkyDomeLight', 'aiMeshLight', 'aiPhotometricLight'])
+                existing_light_groups = []
+                for light in lights:
+                    light_group = cmds.getAttr(light + ".aiAov")
+                    if light_group != "" and not light_group in existing_light_groups:
+                        existing_light_groups.append(light_group)
+                return existing_light_groups
+            light_groups = _get_light_groups()
+            for lg in light_groups:
+                aov_selection += " or RGBA_" + lg
+            pm.Attribute(denoiser.layerSelection).set(aov_selection)
+        _add_denoiser()
 
 
     @staticmethod
