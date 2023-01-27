@@ -33,6 +33,12 @@ class RenderSetup(QtWidgets.QWidget):  # TODO Add exporter render settings for e
             #cmds.workspace(fileRule=['images', image_path])
             pm.Attribute("defaultRenderGlobals.imageFilePrefix").set(image_path)
 
+        def _aov_z():
+            aov = pm.ls("aiAOV_Z")[0] if pm.ls("aiAOV_Z") else pm.createNode("aiAOV", name="aiAOV_Z")
+            filter = pm.PyNode("defaultArnoldFilter")
+            pm.connectAttr(filter.message, pm.Attribute(aov.name() + ".outputs")[0].filter, f=True)
+        _aov_z()
+
         def _aov_uv():
             aov_uv = pm.ls("aiAOV_uv")[0] if pm.ls("aiAOV_uv") else None
             if aov_uv:
