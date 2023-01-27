@@ -70,9 +70,7 @@ class RenderSetup(QtWidgets.QWidget):  # TODO Add exporter render settings for e
                         pm.createNode("aiStateVector", name="aiStateVector_position")
                     pm.Attribute(state.variable).set(3)
                     pm.connectAttr(state.outValue, space_tr.input, f=True)
-                    filter = pm.PyNode("aiAOVFilter_closest") if pm.ls("aiAOVFilter_closest") else \
-                        pm.createNode("aiAOVFilter", name="aiAOVFilter_closest")
-                    pm.Attribute(filter.aiTranslator).set("closest")
+                    filter = pm.PyNode("defaultArnoldFilter")
                     pm.connectAttr(filter.message, pm.Attribute(aov.name() + ".outputs")[0].filter, f=True)
         _aov_position()
 
