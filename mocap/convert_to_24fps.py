@@ -40,9 +40,10 @@ def convert(directory=None):
             continue
         else:
             os.makedirs(path_to_sequence)
-            ffmpeg_exe = str(Path((__file__)).parent.parent.parent.joinpath(r"ffmpeg\bin\ffmpeg.exe"))
-            command = [ffmpeg_exe, "-i", mov] + ["-r", "24", "-q:v 10"] + [path_to_sequence + "/" + name_no_ext + ".%4d" + ".jpg"]
-            subprocess.run(command)
+        ffmpeg_exe = str(Path((__file__)).parent.parent.parent.joinpath(r"ffmpeg\bin\ffmpeg.exe"))
+        command = [ffmpeg_exe, "-i", mov] + ["-r", "24", "-q:v", "10"] + [os.path.normpath(path_to_sequence + "/" + name_no_ext + ".%4d" + ".jpg")]
+        print("[It's alive] " + " ".join(command))
+        subprocess.run(command)
         if group_names:
             print("[Itsalive] Успех! Секвенция сохранена в %s" % path_to_sequence)
         else:

@@ -10,7 +10,7 @@ except:
     sys.path.append(str(Path(__file__).parent.parent))
     import config
 from mocap import convert_to_24fps
-from mocap import create_character_definition
+from mocap import copy_fbx
 
 
 def run(folder=None):
@@ -19,8 +19,8 @@ def run(folder=None):
         folder = args[-1]
     # Конвертирует все mov-файлы в полученной папке в 24 кадра/сек в виде png-сиквенции
     convert_to_24fps.convert(str(folder))
-    # Настраивает fbx-скелет и сохраняет в MA
-    create_character_definition.create_ma(str(folder))
+    # Копирует fbx-скелет в шот
+    copy_fbx.do(str(folder))
 
 
 if __name__ == "__main__":
