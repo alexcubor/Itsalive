@@ -39,7 +39,7 @@ def convert(directory=None):
             print("[Itsalive] Секвенция %s уже существует!" % path_to_sequence)
             continue
         else:
-            os.mkdir(path_to_sequence)
+            os.makedirs(path_to_sequence)
             ffmpeg_exe = str(Path((__file__)).parent.parent.parent.joinpath(r"ffmpeg\bin\ffmpeg.exe"))
             command = [ffmpeg_exe, "-i", mov] + ["-r", "24", "-q:v 10"] + [path_to_sequence + "/" + name_no_ext + ".%4d" + ".jpg"]
             subprocess.run(command)
