@@ -27,7 +27,7 @@ def root():
         'file': {
             'prj': '//alpha/projects/iPr/episodes/iEp/iSc/iSc_iSh',
             'nk': 'comp/nuke/iSc_iSh_comp_iVr.nk',
-            'nk_out': 'review/iSc_iSh_comp_iVr.mov',
+            'nk_out': 'preview/iSc_iSh_comp_iVr.mov',
             'fx': 'render/fx/iVr',
             'render': 'render/maya/iVr',
             'UE': 'render/UE/iVr',

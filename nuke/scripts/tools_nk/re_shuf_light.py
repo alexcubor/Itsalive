@@ -1,6 +1,6 @@
 try: import nuke
 except: s=1
-def re_Shuffle_light():
+def reShfLight():
     node = nuke.createNode('NoOp')
 
     ch_list = list(set([
@@ -89,10 +89,16 @@ def re_Shuffle_light():
     for k in name_key:
         cs.setInput(id_cs, nd_dict[k]['txt'])
         id_cs += 1
-    cs['width'].setValue(cs.input(0).width())
+    cs['width'].setValue(cs.input(0).width()*2)
     cs['height'].setValue(cs.input(0).height())
-    cs['rows'].setValue(1)
-    cs['columns'].setValue(len(name_key))
+    cs['rows'].setValue(2)
+    cs['roworder'].setValue('TopBottom')
+
+
+    l = len(name_key)/2
+    if int(l) < l:  ll = int(l)
+    else:           ll = l
+    cs['columns'].setValue(ll)
 
 
 

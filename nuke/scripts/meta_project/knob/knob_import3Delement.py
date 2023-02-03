@@ -41,33 +41,9 @@ def create_cam(pfile, name ,mVr = ''):
     nuke.delete(d)
 
     # Ca = nuke.createNode('Camera2', )
-    Ca = nuke.nodes.Camera2()
+    Ca = nuke.nodes.Camera3()
     Ca['read_from_file'].setValue(True)
     Ca['frame_rate'].setValue(25)
     Ca['file'].setValue(camFiles)
     Ca['label'].setValue(name + '_' + mVr)
     Ca.setXYpos(dx, dy)
-
-def ImpCam_(p_sire, p_low):
-    # p_sire , p_low  = nuke.root().name().split('/')[-1].split('_')[0:2]
-    # p_sire='ep035' , p_low='sh0106'
-    in_file = __ProectKeys__()['file']['in_file'].split('mEp')[0]
-    f = in_file + p_sire + '/' + p_low + '/' + 'data/abc'
-    if os.path.isdir(f):
-        camFiles = f + '/' + max(
-            [i for i in filter(lambda i: i.endswith('.abc'), os.listdir(f)) if re.match('.*' + 'camera' + '.*', i)])
-        v = 'v' + camFiles.split('_v')[1][:3]
-
-        # _ dot  ################
-        d = nuke.createNode('Dot')
-        dx, dy = d.xpos(), d.ypos()
-        nuke.delete(d)
-
-        # Ca = nuke.createNode('Camera2', )
-        Ca = nuke.nodes.Camera2()
-        Ca['read_from_file'].setValue(True)
-        Ca['frame_rate'].setValue(24)
-        Ca['file'].setValue(camFiles)
-        Ca['label'].setValue('cam_' + p_sire + '_' + p_low + '_' + v)
-        Ca.setXYpos(dx,dy)
-        
