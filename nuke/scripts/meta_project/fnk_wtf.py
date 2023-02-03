@@ -1,9 +1,18 @@
 
-
-# from mt_icon._setIcon import setFile
 import os,re
-from _info.rwInfo import info_read
+from rwInfo import info_read
 from mt_root import root
+try: import nuke
+except: s=1
+def readlastESS(ess_key_old):
+    # print('wtf readSaved')
+    #ess_key_old = {'mEp': 'ep002', 'mSq': 'sq005', 'mSh': 'sh0602'}
+    # print('ess_key_old',ess_key_old)
+    ess_list = info_read(root()['prj']['iPr'])
+    ESSdct = root()
+    ESSdct['dict'] = CTR_ESS_dict(ess_list, ess_key_old)['dict']
+    return ESSdct
+
 def Ep_Sq_Sh_dct(ESSdct={},simple_chac = False):
     # print('wtf Ep_Sq_Sh_dct')
     if not ESSdct: ESSdct = root()
@@ -83,7 +92,16 @@ def ess_id_generation(key,lsts):
         if id < 0:          id = 0
     return id
 
+
+def repl(file = '', prj = {}):
+    for p in prj:
+        if p in file:
+            file = file.replace(p, prj[p])
+    return file
+
+
 def task_list(wtn={}):
+    # ['sc02_sh030_comp_v002.nk', 'sc02_sh030_comp_v001.nk', 'tt.nk', 'test_shuf_light_voo.nk']
     nk_list = ['']
     if not wtn:
         return
@@ -91,29 +109,31 @@ def task_list(wtn={}):
     path = os.path.dirname(root()['file']['prj'] + '/' + root()['file']['nk'])
     path = repl(path, wtn)
     if os.path.exists(path):
-        nk_list = [ nk for nk in filter(lambda i: i.endswith('.nk'), os.listdir(path))]
+        nk_list = [
+            nk
+            for nk in
+            filter(lambda i: i.endswith('.nk'), os.listdir(path))
+        ]
         nk_list.sort(reverse=True)
+    # sort nk filr list to name
+    if nk_list:
+        name = \
+            os.path.splitext(
+                os.path.basename(
+                    root()['file']['prj'] + '/' +
+                    root()['file']['nk'].split('iVr')[0]
+                )
+            )[0]
+        name = repl(name, wtn)
+        a = []
+        b = []
+        for nk in nk_list:
+            if name in nk:  a.append(nk)
+            else:           b.append(nk)
+        nk_list =  a + b
     return nk_list
-def repl(file = '', prj = {}):
-    for p in prj:
-        if p in file:
-            file = file.replace(p, prj[p])
-    return file
-
-def iName(lst = [],path = ''):
-    print('fnk_wtf iName')
-    p_re = root()['p_re']
-    dct = {
-        k: ''.join(re.findall(p_re[k], path))
-        for i in lst
-        for k in p_re
-        if k in lst
-        if re.match('.*' + p_re[k], path)
-    }
-    print('dct', dct)
-    return dct
 def iVrList(wtn = {}, nk_list = []):
-    print('fnk_wtf iVrList')
+    # print('fnk_wtf iVrList') # iVr_lst ['v001', 'v002']
     p_re = root()['p_re']
     nk_file = os.path.basename(root()['file']['nk']).split('iVr')[0]
     nk_file = repl(nk_file, wtn)
@@ -123,10 +143,32 @@ def iVrList(wtn = {}, nk_list = []):
         if nk_file in nkl
     ]
     iVr_lst.sort()
-    print('iVr_lst',iVr_lst)
+    # print('iVr_lst',iVr_lst)
     return iVr_lst
 
+def iName(lst = [],path = ''):
+    # print('fnk_wtf iName')
+    p_re = root()['p_re']
+    dct = {
+        k: ''.join(re.findall(p_re[k], path))
+        for i in lst
+        for k in p_re
+        if k in lst
+        if re.match('.*' + p_re[k], path)
+    }
+    # print('dct', dct)
+    return dct
 
+def openNK():
+    name = nuke.root().name()
+    p_re = root()['p_re']
+    essv = {k: re.findall(p_re[k], name)[0] for k in p_re if re.findall(p_re[k], name)}
+    if len(essv) == len(p_re):
+        return essv
+    else:
+        return {}
+
+# print(os.path.splitext('skdjhf.skdjhf'))
 '''
 def generate_Sq(ESS):
     import re

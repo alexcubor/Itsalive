@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'D:/UI/ui_to_meta/wui_PB.ui',
-# licensing of 'D:/UI/ui_to_meta/wui_PB.ui' applies.
+# Form implementation generated from reading ui file 'C:/Users/bzufarov/Documents/Itsalive/nuke/scripts/meta_project/prg_ui/mt_ui/wui_PB.ui',
+# licensing of 'C:/Users/bzufarov/Documents/Itsalive/nuke/scripts/meta_project/prg_ui/mt_ui/wui_PB.ui' applies.
 #
-# Created: Mon Aug 15 15:38:56 2022
-#      by: pyside2-uic  running on PySide2 5.12.2
+# Created: Wed Feb  1 22:34:34 2023
+#      by: pyside2-uic  running on PySide2 5.12.6
 #
 # WARNING! All changes made in this file will be lost!
 
