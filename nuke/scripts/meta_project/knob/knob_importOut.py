@@ -19,7 +19,7 @@ def info():
 
 
 from imp import reload
-try: import nuke
+try: import nuke, nukescripts
 except: s=1
 import os
 from mt_root import root
@@ -32,12 +32,16 @@ def start_importOut(WTName = {},simpl = False):
     out_pub_file = root()['file']['prj'] + '/' + root()['file']['nk_out']
     print(out_pub_file)
 
-    file = out_pub_file
+    file = out_pub_file.split('/iVr')[0]
     for tsk in WTName:
         if tsk in file:
             file = file.replace(tsk, WTName[tsk])
+    print(file)
+    copy_paste_file(file)
 
+    '''
     out_file = os.path.dirname(file)
+    print('out_file',out_file)
     out_lst = os.listdir(out_file)
     fr = \
         str(int(''.join(re.findall('[0-9][0-9][0-9][0-9]', out_lst[0])))) \
@@ -51,15 +55,9 @@ def start_importOut(WTName = {},simpl = False):
     d = nuke.createNode('Dot')
     dx, dy = d.xpos(), d.ypos()
     nuke.delete(d)
-    ################
-
-    # _ File  ################
-    ################
+    
     nodeReadS = nodeReadS_(out_file_dict)
 
-    ################
-
-    # _ XY #########
     x, y = dx, dy
     xx, yy = 110, 140
     c, d = 0, 1
@@ -68,7 +66,7 @@ def start_importOut(WTName = {},simpl = False):
         if c < 2 : c= c + 1
         else:
             c = 0; d = d + 1
-
+    '''
 def nodeReadS_(out_file_dict = {}):
     dict = out_file_dict
     nodeReadS = []
@@ -91,4 +89,10 @@ def nodeReadS_(out_file_dict = {}):
             nodeReadS.append(node)
     return nodeReadS
 
-
+def copy_paste_file(file):
+    try:
+        os.system('echo ' + file + '| clip')
+        nuke.nodePaste(nukescripts.cut_paste_file())
+        os.system('echo off | clip')
+    except:
+        s = 1

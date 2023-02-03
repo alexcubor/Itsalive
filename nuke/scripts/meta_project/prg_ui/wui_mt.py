@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'C:/Users/bzufarov/Documents/Itsalive/nuke/scripts/meta_project/prg_ui/mt_ui/wui_mt.ui',
 # licensing of 'C:/Users/bzufarov/Documents/Itsalive/nuke/scripts/meta_project/prg_ui/mt_ui/wui_mt.ui' applies.
 #
-# Created: Fri Jan 27 09:38:58 2023
+# Created: Wed Feb  1 22:34:34 2023
 #      by: pyside2-uic  running on PySide2 5.12.6
 #
 # WARNING! All changes made in this file will be lost!

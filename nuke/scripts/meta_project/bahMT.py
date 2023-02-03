@@ -1,14 +1,18 @@
+import os.path
+
 from PySide2.QtWidgets import QWidget
 from prg_ui.wui_mt import Ui_BMT
 from prg_ui.ctr_PB import PB
 
+import getpass
 from imp import reload
 from fnk.ctr_flowlayout import FlowLayout
 from mt_root import root
 from fnk_wtf import Ep_Sq_Sh_dct, \
     create_dctESSmin, task_list, \
-    iName, iVrList
-from _info.rwInfo import prj_list_read
+    iName, iVrList, readlastESS,\
+    openNK, repl
+from rwInfo import prj_list_read, lastESS_read, lastESS_wright
 
 from knob.fnc_creatPB import \
     knobListDef, pushBarId_bmp
@@ -18,18 +22,23 @@ class bah_mt(QWidget):
         self.ui = Ui_BMT()
         self.ui.setupUi(self)
 
-        self.workTaskName = root()['prj']
+        self.workTaskName = {k:'' for k in root()['wtn']}
+        self.workTaskName['iPr'] = root()['prj']['iPr']
+        self.workTaskName['iUr'] = getpass.getuser()
+
+
         self.StartWorkAddWDGT()
         self.pb_set_value()
         ### start Menu set value
         self.menu_set_value()
         ### end menu set ###########
+        self.step_reload()
 
-        self.ESS_setFiltr()
 
     def pb_set_value(self):
         self.ui.pb_up.clicked.connect(self.step_up_down)
         self.ui.pb_down.clicked.connect(self.step_up_down)
+        self.ui.pb_reload.clicked.connect(self.step_reload)
     def menu_set_value(self):
         # menu project name
         self.menu_prj = self.ui.cmb_0
@@ -57,7 +66,6 @@ class bah_mt(QWidget):
         print(self.menu_nk.currentText())
 
         self.wtn()
-        print(self.workTaskName['iVr'])
     def step_up_down(self):
         key = 'iSh'
         widget = self.sender()
@@ -76,7 +84,26 @@ class bah_mt(QWidget):
         self.menu[key].setCurrentIndex(idx)
 
         self.ESS_setFiltr()
+    def step_reload(self):
+        print('step_reload')
+        key = root()['key']
+        essv = openNK()
+        if essv:
+            ess = {k:essv[k] for k in key}
+        else:
+            ess = lastESS_read()
+        if ess:
+            print('ess',ess)
+            self.wright_ESSmenu(readlastESS(ess)['dict'])
+            self.ESS_setFiltr()
 
+            if 'iVr' in essv:
+                nk = os.path.basename(root()['file']['nk'])
+                nk = repl(nk,essv)
+                nk_list = [self.menu_nk.itemText(index) for index in range(self.menu_nk.count())]
+                index = nk_list.index(nk)
+                self.menu_nk.setCurrentIndex(index)
+                self.wtn()
     def ESS_setFiltr(self):
         read_SNT_ESS = self.read_ESS()
         EpSqShdct = Ep_Sq_Sh_dct(read_SNT_ESS)
@@ -89,7 +116,6 @@ class bah_mt(QWidget):
         self.wtn()
         # self.setPubIcon(tabname)
         self.setPublabelName()
-        # self.WorkTask__Size_View(tabname)
     def read_ESS(self):
         rt_dict = root()
         key = root()['key']
@@ -111,7 +137,6 @@ class bah_mt(QWidget):
                 self.menu[k].addItem(text[idx])
             self.menu[k].setCurrentIndex(index)
 
-
             #
     def nkList(self):
         lst = task_list(self.workTaskName)
@@ -121,9 +146,7 @@ class bah_mt(QWidget):
     def wtn(self):
         ## iEs, iSc, iSh ##
         ess = create_dctESSmin(self.read_ESS()['dict'])
-
         slkt_nk = {'iSel': self.menu_nk.currentText()}
-
         ## iVr ##
         lst = ['iVr']
         path = self.menu_nk.currentText()
@@ -141,8 +164,28 @@ class bah_mt(QWidget):
         for k in essv:
             # if k in root()['prj']:
             self.workTaskName[k] = essv[k]
+    ## TODO #######################################
+    #     ess = create_dctESSmin(self.read_ESS()['dict'])
+    #     self.wtn_set_dkt(ess)
+    #
+    #     slct = self.menu_nk.currentText()
+    #     iVr = iName('iVr', slct)
+    #     nk_list = [self.menu_nk.itemText(index) for index in range(self.menu_nk.count())]
+    #     ess = {k: self.workTaskName[k] for k in root()['key']}
+    #     vvl = {
+    #         'iVr': iVr['iVr'],
+    #         'iSel': slct,
+    #         'iVrlist': iVrList(ess, nk_list)
+    #     }
+    #     self.wtn_set_dkt(vvl)
+    #
+    #     print(self.workTaskName)
+    # def wtn_set_dkt(self, dkt = {}):
+    #     for k in dkt:
+    #         self.workTaskName[k]: dkt[k]
+    #
+    #     ## iEs, iSc, iSh ##
 
-        print(self.workTaskName)
     def setPublabelName(self):
         # print('self setPublabelName')
         text = '_'
@@ -174,7 +217,6 @@ class bah_mt(QWidget):
             layout_pBar.addWidget(widget)
             pushBar_dict[widget.buttn_idw] = widget
             buttn_idw += 1
-            #print('     ',pGp,knobID)
         masterDict['pBar'] = pushBar_dict
         return masterDict
         # {0: <ctr_PB.PB(0x18a36bda2d0, name='PB') at 0x0000018A371223C8>,
@@ -197,9 +239,11 @@ class bah_mt(QWidget):
             knobID = widget.knobID
 
             if knobListDef()[knobID]['name'] == 'openScript':
+                lastESS_wright(self.workTaskName)
                 knobListDef()[widget.knobID]['def'](self.workTaskName)
                 #
             elif knobListDef()[knobID]['name'] == 'createScript':
+                lastESS_wright(self.workTaskName)
                 knobListDef()[widget.knobID]['def'](self.workTaskName)
                 #
             elif knobListDef()[knobID]['name'] == 'importScript':
