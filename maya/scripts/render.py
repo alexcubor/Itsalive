@@ -32,11 +32,19 @@ class RenderSetup(QtWidgets.QWidget):  # TODO Add exporter render settings for e
             image_path = config.Template(context.template).apply_fields_publish(context.fields) + "/v001/<RenderLayer>/<RenderPass>/" + context.fields["shot"] + "_<RenderPass>"
             #cmds.workspace(fileRule=['images', image_path])
             pm.Attribute("defaultRenderGlobals.imageFilePrefix").set(image_path)
+            pm.Attribute("defaultArnoldRenderOptions.abortOnError").set(0)
+
+        def _driver_32bit(aov):
+            driver = pm.ls("_32bitArnoldDriver")[0] if pm.ls("_32bitArnoldDriver") else \
+                pm.createNode("aiAOVDriver", name="_32bitArnoldDriver")
+            pm.Attribute(driver.preserveLayerName).set(1)
+            pm.Attribute(driver.exrTiled).set(1)
+            pm.Attribute(driver.autocrop).set(1)
+            pm.connectAttr(driver.message, pm.Attribute(aov.name() + ".outputs")[0].driver, f=True)
 
         def _aov_z():
             aov = pm.ls("aiAOV_Z")[0] if pm.ls("aiAOV_Z") else pm.createNode("aiAOV", name="aiAOV_Z")
-            filter = pm.PyNode("defaultArnoldFilter")
-            pm.connectAttr(filter.message, pm.Attribute(aov.name() + ".outputs")[0].filter, f=True)
+            _driver_32bit(aov)
         _aov_z()
 
         def _aov_uv():
@@ -76,8 +84,11 @@ class RenderSetup(QtWidgets.QWidget):  # TODO Add exporter render settings for e
                         pm.createNode("aiStateVector", name="aiStateVector_position")
                     pm.Attribute(state.variable).set(3)
                     pm.connectAttr(state.outValue, space_tr.input, f=True)
-                    filter = pm.PyNode("defaultArnoldFilter")
+                    filter = pm.PyNode("aiAOVFilter_closest") if pm.ls("aiAOVFilter_closest") else \
+                        pm.createNode("aiAOVFilter", name="aiAOVFilter_closest")
+                    pm.Attribute(filter.aiTranslator).set('closest')
                     pm.connectAttr(filter.message, pm.Attribute(aov.name() + ".outputs")[0].filter, f=True)
+                    #_driver_32bit(aov)
         _aov_position()
 
         def _add_denoiser():
