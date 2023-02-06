@@ -33,6 +33,8 @@ class RenderSetup(QtWidgets.QWidget):  # TODO Add exporter render settings for e
             #cmds.workspace(fileRule=['images', image_path])
             pm.Attribute("defaultRenderGlobals.imageFilePrefix").set(image_path)
             pm.Attribute("defaultArnoldRenderOptions.abortOnError").set(0)
+            pm.Attribute("defaultArnoldRenderOptions.GITransmissionDepth").set(4)
+            pm.Attribute("defaultArnoldRenderOptions.autoTransparencyDepth").set(4)
 
         def _driver_32bit(aov):
             driver = pm.ls("_32bitArnoldDriver")[0] if pm.ls("_32bitArnoldDriver") else \
