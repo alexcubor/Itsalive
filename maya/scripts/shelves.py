@@ -79,4 +79,6 @@ def create():
     if config.is_dev():
         command = "import render; from importlib import reload; reload(render); render.RenderSetup().import_settings()"
     shelf.addButton(label="Settings", icon="camera-dynamic-color.png", command=command)
-    shelf.addButton(label="Afanasy", icon="star-dynamic-color.png", command="import maya.cmds as cmds; cmds.delete(cmds.ls(type='unknown')); import afanasy; ui = afanasy.UI(); ui.show()")
+    shelf.addButton(label="Batch", icon="star-dynamic-color.png", command="import maya.cmds as cmds; cmds.delete(cmds.ls(type='unknown')); import afanasy; ui = afanasy.UI(); ui.show()")
+    shelf.addButton(label="Arnold", icon="star-dynamic-color.png", command="from afanasy import meArnoldRender; meArnoldRender=meArnoldRender.meArnoldRender()")
+    shelf.addButton(label="Save", icon="bulb-dynamic-color.png", command="import render; render.save_lights()")
