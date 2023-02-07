@@ -5,6 +5,7 @@ import sys
 import platform
 import subprocess
 from pathlib import Path
+import argparse
 
 """
 Через этот скрипт запускается приложение с инструментарием Itsalive
@@ -13,6 +14,10 @@ from pathlib import Path
 
 class App(object):
     def __init__(self):
+        parser = argparse.ArgumentParser()
+        parser.add_argument("-app", help="Application name")
+        parser.add_argument("-p", help="Project name")
+        self.args, self.unknown = parser.parse_known_args()
         os.environ["TOOLS_PATH"] = str(Path(os.path.dirname(__file__)).parent.parent).replace("\\", "/")
         print("[It's alive] Start tools from " + os.environ["TOOLS_PATH"])
         print("[It's alive] Maya initialization...")
@@ -21,11 +26,15 @@ class App(object):
         os.environ["MAYA_LOCATION"] = maya_locations[platform.system()]
         put_env("PATH", os.environ["MAYA_LOCATION"] + "/bin")
         put_env("MAYA_MODULE_PATH", os.path.dirname(__file__))
+        self.app_name = "maya"
+        if self.args.app:
+            self.app_name = self.args.app
         self.plugins_path = os.path.dirname(__file__) + "/plugins"
         self.project_name = self.get_project_name()
+        put_env("MAYA_PRESET_PATH", "//alpha/projects/" + self.project_name)
         self.install_cgru()
         self.install_studio_library()
-        self.install_megascan_livelink()
+        # self.install_megascan_livelink()
 
     @staticmethod
     def install_cgru():
@@ -68,24 +77,22 @@ class App(object):
 
     def install_megascan_livelink(self):
         put_env("MAYA_MODULE_PATH", self.plugins_path + "/MSLiveLink")
+        put_env("PYTHONPATH", self.plugins_path + "/MSLiveLink")
         print("[It's alive] Install MegaScan LiveLink 7.0")
 
-    @staticmethod
-    def get_project_name():
-        parser = argparse.ArgumentParser()
-        parser.add_argument("-p", help="Project.")
-        args, unknown = parser.parse_known_args()
-        if args.p:
-            os.environ["PROJECT_NAME"] = args.p
-        print("[It's alive] Project name: " + args.p)
-        return args.p
+    def get_project_name(self):
+        if self.args.p:
+            os.environ["PROJECT_NAME"] = self.args.p
+        print("[It's alive] Project name: " + self.args.p)
+        return self.args.p
 
     # Запуск Maya
-    @staticmethod
-    def run():
-        maya_app = {'Windows': r'bin/maya.exe'}[platform.system()]
+    def run(self):
+        maya_app = {'Windows': r'bin/%s.exe' % self.app_name}[platform.system()]
         app_path = os.path.join(os.getenv("MAYA_LOCATION"), maya_app)
-        p = subprocess.Popen([app_path])
+        command = [app_path] + self.unknown
+        print("[It's alive] Start command: ", command)
+        p = subprocess.Popen(command)
         wait = p.wait()
         exit(wait)
 
