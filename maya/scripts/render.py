@@ -35,6 +35,8 @@ class RenderSetup(QtWidgets.QWidget):  # TODO Add exporter render settings for e
             pm.Attribute("defaultArnoldRenderOptions.abortOnError").set(0)
             pm.Attribute("defaultArnoldRenderOptions.GITransmissionDepth").set(4)
             pm.Attribute("defaultArnoldRenderOptions.autoTransparencyDepth").set(4)
+            pm.Attribute("defaultArnoldRenderOptions.expandProcedurals").set(1)
+            pm.Attribute("defaultArnoldRenderOptions.plugin_searchpath").set("//alpha/tools/Arnold/Windows/maya2022-5.2.1/procedurals")
 
         def _driver_32bit(aov):
             driver = pm.ls("_32bitArnoldDriver")[0] if pm.ls("_32bitArnoldDriver") else \
@@ -126,3 +128,10 @@ class RenderSetup(QtWidgets.QWidget):  # TODO Add exporter render settings for e
     def import_json(filepath):
         with open(filepath, "r") as file:
             renderSetup.instance().decode(json.load(file), renderSetup.DECODE_AND_OVERWRITE, None)
+
+
+def save_lights():
+    pm.select("|lights")
+    filepath = cmds.file(q=True, sn=True)
+    shot_dir = filepath.split("/light/")[0]
+    cmds.file(shot_dir + "/cache/lights.ma", force=True, options="v=0;", typ="mayaAscii", pr=1, es=1)
