@@ -35,7 +35,6 @@ class RenderSetup(QtWidgets.QWidget):  # TODO Add exporter render settings for e
             pm.Attribute("defaultArnoldRenderOptions.abortOnError").set(0)
             pm.Attribute("defaultArnoldRenderOptions.GITransmissionDepth").set(4)
             pm.Attribute("defaultArnoldRenderOptions.autoTransparencyDepth").set(4)
-            pm.Attribute("defaultArnoldRenderOptions.expandProcedurals").set(1)
             pm.Attribute("defaultArnoldRenderOptions.plugin_searchpath").set("//alpha/tools/Arnold/Windows/maya2022-5.2.1/procedurals")
 
         def _driver_32bit(aov):
