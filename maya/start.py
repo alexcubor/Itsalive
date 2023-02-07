@@ -34,7 +34,7 @@ class App(object):
         put_env("MAYA_PRESET_PATH", "//alpha/projects/" + self.project_name)
         self.install_cgru()
         self.install_studio_library()
-        self.install_megascan_livelink()
+        # self.install_megascan_livelink()
 
     @staticmethod
     def install_cgru():
@@ -77,6 +77,7 @@ class App(object):
 
     def install_megascan_livelink(self):
         put_env("MAYA_MODULE_PATH", self.plugins_path + "/MSLiveLink")
+        put_env("PYTHONPATH", self.plugins_path + "/MSLiveLink")
         print("[It's alive] Install MegaScan LiveLink 7.0")
 
     def get_project_name(self):
