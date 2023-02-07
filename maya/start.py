@@ -35,6 +35,7 @@ class App(object):
         self.install_cgru()
         self.install_deadline()
         self.install_studio_library()
+        self.install_arnold()
         # self.install_megascan_livelink()
 
     @staticmethod
@@ -77,6 +78,10 @@ class App(object):
         deadline_maya_path = deadline_work_path + "/submission/Maya/Client"
         put_env("MAYA_MODULE_PATH", deadline_maya_path + "/AllUsers")
         print("[It's alive] Install Deadline ")
+
+    @staticmethod
+    def install_arnold(self):
+        put_env("ARNOLD_PLUGIN_PATH", "//alpha/tools/Arnold/Windows/maya2022-5.2.1/procedurals")
 
     @staticmethod
     def install_studio_library():
