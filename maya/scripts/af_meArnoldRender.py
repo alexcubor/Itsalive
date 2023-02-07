@@ -90,7 +90,7 @@ class meArnoldRender ( object ) :
 		self.bkburn_param = {}
 
 		self.assgenCommand = 'arnoldExportAss'
-		self.def_assgenCommand = 'Render -r arnold'
+		self.def_assgenCommand = 'mayarender -r arnold'
 		# maya scene name used for deferred .ass generation
 		self.def_scene_name = ''  
 		
@@ -124,11 +124,9 @@ class meArnoldRender ( object ) :
 		self.job_param['job_animation'] = \
 			getDefaultIntValue(self_prefix, 'job_animation', 1) is 1
 
-		self.job_param['job_start'] = \
-			getDefaultIntValue(self_prefix, 'job_start', 1)
+		self.job_param['job_start'] = int(cmds.playbackOptions(q=True, animationStartTime=True))
 
-		self.job_param['job_end'] = \
-			getDefaultIntValue(self_prefix, 'job_end', 100)
+		self.job_param['job_end'] = int(cmds.playbackOptions(q=True, animationEndTime=True))
 
 		self.job_param['job_step'] = \
 			getDefaultIntValue(self_prefix, 'job_step', 1)
@@ -161,16 +159,13 @@ class meArnoldRender ( object ) :
 		self.ass_param['ass_reuse'] = \
 			getDefaultIntValue(self_prefix, 'ass_reuse', 0) is 1
 
-		ass_dirname = cmds.workspace( fileRuleEntry='ASS' )
-		if ass_dirname == '' :
+		ass_dirname = "//alpha/projects/3033/tmp/ass"
+		if ass_dirname == '':
 			ass_dirname = 'ass'
-			cmds.workspace( fileRule=('ASS',ass_dirname) )
-			cmds.workspace( saveWorkspace=True )
-				
-		self.ass_param['ass_dirname'] = \
-			getDefaultStrValue(self_prefix, 'ass_dirname', ass_dirname ) 
-
-		#self.ass_param['ass_perframe'] = \
+			cmds.workspace(fileRule=('ASS', ass_dirname))
+			cmds.workspace(saveWorkspace=True)
+		self.ass_param['ass_dirname'] = ass_dirname
+		# self.ass_param['ass_perframe'] = \
 		#	getDefaultIntValue(self_prefix, 'ass_perframe', 1) is 1
 
 		self.ass_param['ass_selection'] = \
@@ -243,9 +238,9 @@ class meArnoldRender ( object ) :
 			cmds.getAttr('defaultArnoldRenderOptions.procedural_searchpath'))
 		
 		# defaultArnoldRenderOptions.shader_searchpath	
-		self.ar_param['ar_shader_search_path'] = \
-			getDefaultStrValue(self_prefix, 'ar_shader_search_path',
-			cmds.getAttr('defaultArnoldRenderOptions.shader_searchpath'))
+		# self.ar_param['ar_shader_search_path'] = \
+		# 	getDefaultStrValue(self_prefix, 'ar_shader_search_path',
+		# 	cmds.getAttr('defaultArnoldRenderOptions.shader_searchpath'))
 		
 		# defaultArnoldRenderOptions.texture_searchpath
 		self.ar_param['ar_tex_search_path'] = \
@@ -357,7 +352,7 @@ class meArnoldRender ( object ) :
 		if ar_verbosity_level < 2:
 			ar_verbosity_level = 2
 
-		cmd_buffer = ['kick']
+		cmd_buffer = ['//alpha/tools/Arnold/Windows/maya2022-5.2.1/bin/kick.exe']
 		if ar_verbosity_level != 0:
 			cmd_buffer.append('-v %s' % ar_verbosity_level)
 
@@ -465,7 +460,7 @@ class meArnoldRender ( object ) :
 		
 		ar_plugin_path = self.ar_param['ar_plugin_path']
 		ar_proc_search_path = self.ar_param['ar_proc_search_path']
-		ar_shader_search_path = self.ar_param['ar_shader_search_path']
+		#ar_shader_search_path = self.ar_param['ar_shader_search_path']
 		ar_tex_search_path = self.ar_param['ar_tex_search_path']
 		
 		assgen_cmd = ''
@@ -484,7 +479,7 @@ class meArnoldRender ( object ) :
 			assgen_cmd += ' -ai:lve 1' # ' -ai:lfv 2'
 			assgen_cmd += ' -ai:sppg "' + ar_plugin_path + '"'
 			assgen_cmd += ' -ai:sppr "' + ar_proc_search_path + '"'
-			assgen_cmd += ' -ai:spsh "' + ar_shader_search_path + '"'
+			#assgen_cmd += ' -ai:spsh "' + ar_shader_search_path + '"'
 			assgen_cmd += ' -ai:sptx "' + ar_tex_search_path + '"'
 			
 			#assgen_cmd += ' -filename \"' + filename + '\"'
@@ -512,10 +507,10 @@ class meArnoldRender ( object ) :
 
 			if ass_expand_procedurals :
 				assgen_cmd += ' -expandProcedurals'
-				
+
 			if ass_export_bounds:
 				assgen_cmd += ' -boundingBox'
-				
+
 			assgen_cmd += ' -filename \"' + filename + '\"'
 
 		return assgen_cmd
@@ -539,17 +534,17 @@ class meArnoldRender ( object ) :
 		ass_padding = self.job_param['job_padding']
 		#ass_perframe = self.ass_param['ass_perframe']
 		ass_deferred = self.ass_param['ass_deferred']
-		
+
 		ass_binary = self.ass_param['ass_binary']
 		ass_expand_procedurals = self.ass_param['ass_expand_procedurals']
 		ass_export_bounds = self.ass_param['ass_export_bounds']
-		
+
 		ar_abs_tex_path = self.ar_param['ar_abs_tex_path']
 		ar_abs_proc_path = self.ar_param['ar_abs_proc_path']
-		
+
 		ar_plugin_path = self.ar_param['ar_plugin_path']
 		ar_proc_search_path = self.ar_param['ar_proc_search_path']
-		ar_shader_search_path = self.ar_param['ar_shader_search_path']
+		# ar_shader_search_path = self.ar_param['ar_shader_search_path']
 		ar_tex_search_path = self.ar_param['ar_tex_search_path']
 
 		filename = cmds.workspace(expandName=ass_dirname)
@@ -587,14 +582,14 @@ class meArnoldRender ( object ) :
 			cmds.setAttr(defGlobals + '.outFormatControl', 0)
 			cmds.setAttr(defGlobals + '.putFrameBeforeExt', 1 )
 			if separator == 'none' :
-				cmds.setAttr(defGlobals + '.periodInExt', 0 )		
+				cmds.setAttr(defGlobals + '.periodInExt', 0 )
 			elif separator == '.' :
-				cmds.setAttr(defGlobals + '.periodInExt', 1 )	
+				cmds.setAttr(defGlobals + '.periodInExt', 1 )
 			else :
-				cmds.setAttr(defGlobals + '.periodInExt', 2 )	
-			
+				cmds.setAttr(defGlobals + '.periodInExt', 2 )
+
 			image_name = self.getImageFileNamePrefix()
-			
+
 			cmds.setAttr(aiGlobals + '.binaryAss', ass_binary )
 			cmds.setAttr(aiGlobals + '.expandProcedurals', ass_expand_procedurals )
 			cmds.setAttr(aiGlobals + '.outputAssBoundingBox', ass_export_bounds )
@@ -602,16 +597,16 @@ class meArnoldRender ( object ) :
 			cmds.setAttr(aiGlobals + '.absoluteProceduralPaths', ar_abs_proc_path )
 			cmds.setAttr(aiGlobals + '.plugins_path', ar_plugin_path, type='string' )
 			cmds.setAttr(aiGlobals + '.procedural_searchpath', ar_proc_search_path, type='string' )
-			cmds.setAttr(aiGlobals + '.shader_searchpath', ar_shader_search_path, type='string' )
+			# cmds.setAttr(aiGlobals + '.shader_searchpath', ar_shader_search_path, type='string' )
 			cmds.setAttr(aiGlobals + '.texture_searchpath', ar_tex_search_path, type='string' )
 			#
 			# Clear .output_ass_filename to force using default filename from RenderGlobals
 			#
 			cmds.setAttr(aiGlobals + '.output_ass_filename', '', type='string' )
-			
+
 			cmds.workspace( fileRule=('ASS',self.ass_param['ass_dirname']) )
 			cmds.workspace( saveWorkspace=True )
-		
+
 			if ass_deferred:
 				# generate unique maya scene name and save it
 				# with current render and .ass generation settings
@@ -880,7 +875,7 @@ class meArnoldRender ( object ) :
 		"""Displays preview of current .ass full filename in textFieldGrp
 		"""
 		filename = self.get_ass_name ( True, self.layer, '' )
-		
+
 		cmds.textFieldGrp(
 			'%s|f0|t0|tc1|fr2|fc2|ass_resolved_path' % self.winMain,
 			edit=True,
@@ -959,9 +954,9 @@ class meArnoldRender ( object ) :
 			edit=True,
 			bgc=bg_color
 		)  # , enableBackground=False
-		
+
 		self.setResolvedPath()
-	
+
 	def set_needed_os ( self, arg ) :
 		"""set_needed_os
 
@@ -1131,7 +1126,7 @@ class meArnoldRender ( object ) :
 		self.winMain = \
 			cmds.window(
 				meArnoldRenderMainWnd,
-				title='meArnoldRender ver.%s (%s)' % (meArnoldRenderVer,
+				title="meArnoldRender ver.%s (%s)" % (meArnoldRenderVer,
 														self.os),
 				menuBar=True,
 				retain=False,
@@ -1436,7 +1431,7 @@ class meArnoldRender ( object ) :
 			rowSpacing=0,
 			adjustableColumn=True
 		)
-		
+
 		cmds.checkBoxGrp(
 			'job_cleanup_ass',
 			cw=((1, cw1), (2, cw1 * 2)),
@@ -1466,12 +1461,12 @@ class meArnoldRender ( object ) :
 				self.job_param
 			)
 		)
-		
+
 		cmds.text( label ='\n   Note: Files will be cleaned after the job delete', al='left' )
-		
+
 		cmds.setParent('..')
 		cmds.setParent('..')
-		
+
 		cmds.setParent('..')
 
 		#
@@ -1655,7 +1650,7 @@ class meArnoldRender ( object ) :
 			enable=not self.ass_param['ass_deferred'],
 			cc=partial(self.assDirNameChanged, 'ass_compressed')
 		)
-	
+
 		cmds.checkBoxGrp(
 			'ass_expand_procedurals',
 			cw=((1, cw1), (2, cw1 * 2)),
@@ -1669,7 +1664,7 @@ class meArnoldRender ( object ) :
 				self.ass_param
 			)
 		)
-		
+
 		cmds.checkBoxGrp(
 			'ass_export_bounds',
 			cw=((1, cw1), (2, cw1 * 2)),
@@ -1686,7 +1681,7 @@ class meArnoldRender ( object ) :
 
 		cmds.setParent('..')
 		cmds.setParent('..')
-		
+
 
 		cmds.frameLayout(
 			'fr2',
@@ -1799,7 +1794,7 @@ class meArnoldRender ( object ) :
 
 		cmds.setParent('..')
 		cmds.setParent('..')
-		
+
 		cmds.frameLayout(
 			'fr2',
 			label=' Search Paths ',
@@ -1830,7 +1825,7 @@ class meArnoldRender ( object ) :
 				self.ar_param
 			)
 		)
-		
+
 		cmds.checkBoxGrp(
 			'ar_abs_proc_path',
 			cw=((1, cw1), (2, cw1 * 2)),
@@ -1844,7 +1839,7 @@ class meArnoldRender ( object ) :
 				self.ar_param
 			)
 		)
-		
+
 		cmds.textFieldGrp(
 			'ar_plugin_path',
 			cw=(1, cw1),
@@ -1858,7 +1853,7 @@ class meArnoldRender ( object ) :
 				self.ar_param
 			)
 		)
-		
+
 		cmds.textFieldGrp(
 			'ar_proc_search_path',
 			cw=(1, cw1),
@@ -1872,21 +1867,21 @@ class meArnoldRender ( object ) :
 				self.ar_param
 			)
 		)
-		
-		cmds.textFieldGrp(
-			'ar_shader_search_path',
-			cw=(1, cw1),
-			adj=2,
-			label='Shaders Search Path ',
-			text=self.ar_param['ar_shader_search_path'],
-			cc=partial(
-				setDefaultStrValue,
-				self_prefix,
-				'ar_shader_search_path',
-				self.ar_param
-			)
-		)
-		
+
+		#cmds.textFieldGrp(
+		#	'ar_shader_search_path',
+		#	cw=(1, cw1),
+		#	adj=2,
+		#	label='Shaders Search Path ',
+		#	text=self.ar_param['ar_shader_search_path'],
+		#	cc=partial(
+		#		setDefaultStrValue,
+		#		self_prefix,
+		#		'ar_shader_search_path',
+		#		self.ar_param
+		#	)
+		#)
+
 		cmds.textFieldGrp(
 			'ar_tex_search_path',
 			cw=(1, cw1),
@@ -1900,7 +1895,7 @@ class meArnoldRender ( object ) :
 				self.ar_param
 			)
 		)
-		
+
 		cmds.setParent('..')
 		cmds.setParent('..')
 

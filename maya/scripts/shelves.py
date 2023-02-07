@@ -6,8 +6,7 @@
 import maya.cmds as mc
 import os
 import config
-if config.is_dev():
-    from importlib import reload
+import re
 
 
 def _null(*args):
@@ -67,18 +66,22 @@ def create():
     shelf.build()
     command = "import studiolibrary; studiolibrary.main()"
     shelf.addButton(label="Library", icon="cube-dynamic-color.png", command=command)
-    command = "import assembler; assembler.assembly()"
-    if config.is_dev():
-        command = "import assembler; from importlib import reload; reload(assembler); assembler.assembly()"
+    command = rebuild_command("import assembler; assembler.assembly()")
     shelf.addButton(label="Asmbl", icon="bag-dynamic-color.png", command=command)
-    command = "import render_stats; wind = render_stats.Batch(); wind.show()"
-    if config.is_dev():
-        command = "import render_stats; from importlib import reload; reload(render_stats); wind = render_stats.Batch(); wind.show()"
+    command = rebuild_command("import render_stats; wind = render_stats.Batch(); wind.show()")
     shelf.addButton(label="RStats", icon="minecraft-dynamic-color.png", command=command)
-    command = "import render; render.RenderSetup().import_settings()"
-    if config.is_dev():
-        command = "import render; from importlib import reload; reload(render); render.RenderSetup().import_settings()"
+    command = rebuild_command("import render; render.RenderSetup().import_settings()")
     shelf.addButton(label="Settings", icon="camera-dynamic-color.png", command=command)
     shelf.addButton(label="Batch", icon="star-dynamic-color.png", command="import maya.cmds as cmds; cmds.delete(cmds.ls(type='unknown')); import afanasy; ui = afanasy.UI(); ui.show()")
-    shelf.addButton(label="Arnold", icon="star-dynamic-color.png", command="from afanasy import meArnoldRender; meArnoldRender=meArnoldRender.meArnoldRender()")
-    shelf.addButton(label="Save", icon="bulb-dynamic-color.png", command="import render; render.save_lights()")
+    command = rebuild_command("import af_meArnoldRender; af_meArnoldRender=af_meArnoldRender.meArnoldRender()")
+    shelf.addButton(label="Arnold", icon="star-dynamic-color.png", command=command)
+    command = rebuild_command("import render; render.save_lights()")
+    shelf.addButton(label="Save", icon="bulb-dynamic-color.png", command=command)
+
+
+def rebuild_command(command):
+    libname = re.findall("import (.*);", command)[0]
+    if config.is_dev():
+        return command.replace("import %s;" % libname, "import %s;" % libname + " from importlib import reload; reload(%s);" % libname)
+    else:
+        return command
