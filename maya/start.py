@@ -33,6 +33,7 @@ class App(object):
         self.project_name = self.get_project_name()
         put_env("MAYA_PRESET_PATH", "//alpha/projects/" + self.project_name)
         self.install_cgru()
+        self.install_deadline()
         self.install_studio_library()
         # self.install_megascan_livelink()
 
@@ -69,6 +70,13 @@ class App(object):
             pyset.write(codefix)
             pyset.close()
         _fix()
+
+    @staticmethod
+    def install_deadline():
+        deadline_work_path = "//alpha/tools/Deadline_repo"
+        deadline_maya_path = deadline_work_path + "/submission/Maya/Client"
+        put_env("MAYA_MODULE_PATH", deadline_maya_path + "/AllUsers")
+        print("[It's alive] Install Deadline ")
 
     @staticmethod
     def install_studio_library():
