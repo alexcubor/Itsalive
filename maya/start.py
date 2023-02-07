@@ -80,7 +80,7 @@ class App(object):
         print("[It's alive] Install Deadline ")
 
     @staticmethod
-    def install_arnold(self):
+    def install_arnold():
         put_env("ARNOLD_PLUGIN_PATH", "//alpha/tools/Arnold/Windows/maya2022-5.2.1/procedurals")
 
     @staticmethod
