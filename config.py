@@ -13,8 +13,8 @@ from pathlib import Path
 class FilePath(object):
     def __init__(self, file_path):
         self.config = get_config_json()
-        self.project_path = project_path().split("/")
-        self.file_path = file_path.replace("\\", "/").split("/")
+        self.project_path = [x for x in project_path().split("/") if x]
+        self.file_path = [x for x in file_path.replace("\\", "/").split("/") if x]
         self.file_relative_path = self.file_path[len(self.project_path):]
         self.cerebro_fields = None
         self.fields = None
@@ -101,10 +101,10 @@ class FilePath(object):
                 self.fields["episode"] = self.cerebro_fields["$(url[2])"]
                 self.fields["scene"] = self.cerebro_fields["$(url[3])"]
                 self.fields["shot"] = self.cerebro_fields["$(url[4])"]
-            self.fields["task_activity_name"] = self.cerebro_fields["$(task_activity_name)"]
+            self.fields["task_activity_name"] = self.file_path[7]
             if self.version:
                 self.fields["version_folder"] = self.cerebro_fields["work"]
-            self.fields["name"] = self.cerebro_fields["$(task_name)"]
+            self.fields["name"] = self.file_path[-1]
 
 
 class Template(object):
@@ -196,7 +196,7 @@ def is_dev():
 
 
 def get_config_json():
-    path_config = Path(os.path.abspath(__file__)).parent.joinpath("path_config.json")
+    path_config = Path(os.path.abspath(__file__)).parent.joinpath("config_default.json")
     with open(path_config, "r") as read_file:
         data = json.load(read_file)
         return data

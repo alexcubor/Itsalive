@@ -37,6 +37,16 @@ class RenderSetup(QtWidgets.QWidget):  # TODO Add exporter render settings for e
             pm.Attribute("defaultArnoldRenderOptions.autoTransparencyDepth").set(4)
             pm.Attribute("defaultArnoldRenderOptions.plugin_searchpath").set("//alpha/tools/Arnold/Windows/maya2022-5.2.1/procedurals")
 
+        def _setup_camera():
+            for cam in cmds.ls(type="camera"):
+                if ":cam" in cam.lower():
+                    pm.Attribute(cam + ".renderable").set(1)
+                    pm.Attribute(cam + ".aiUseGlobalShutter").set(0)
+                    pm.Attribute(cam + ".locatorScale").set(25)
+                else:
+                    pm.Attribute(cam + ".renderable").set(0)
+        _setup_camera()
+
         def _driver_32bit(aov):
             driver = pm.ls("_32bitArnoldDriver")[0] if pm.ls("_32bitArnoldDriver") else \
                 pm.createNode("aiAOVDriver", name="_32bitArnoldDriver")
@@ -115,7 +125,7 @@ class RenderSetup(QtWidgets.QWidget):  # TODO Add exporter render settings for e
             for lg in light_groups:
                 aov_selection += " or RGBA_" + lg
             pm.Attribute(denoiser.layerSelection).set(aov_selection)
-        _add_denoiser()
+        # _add_denoiser() отключен, так как для персонажки плохо смотрится
 
 
     @staticmethod

@@ -9,19 +9,31 @@ import pymel.core as pm
 import maya.mel as mm
 import os
 import config
+import glob
 if config.is_dev():
     from importlib import reload
     reload(config)
 
 
 def assembly():
-    env_path = import_env()
-    ref_nodes = get_meshes(pm.ls(pm.referenceQuery(env_path, n=True)))
-    assign_shadow_matte(ref_nodes, "env_shadow_matte")
-    mm.eval("MLdeleteUnused")
-    cmds.inViewMessage(amg='- env.fbx импортирован, как референс\n- Ноды env расфасованы\n- На новую геометрию '
-                           'назначен Shadow matte\n- На новой геометрии отключен Self shadow', pos='botCenter',
-                       fade=1, fst=6000, fot=6000)
+    task_fields = config.task_fields(cmds.file(q=True, sn=True))
+    if task_fields["task_activity_name"] == "anim":
+        env_path = import_env()
+        ref_nodes = get_meshes(pm.ls(pm.referenceQuery(env_path, n=True)))
+        assign_shadow_matte(ref_nodes, "env_shadow_matte")
+        mm.eval("MLdeleteUnused")
+        cmds.inViewMessage(amg='- env.fbx импортирован, как референс\n- Ноды env расфасованы\n- На новую геометрию '
+                               'назначен Shadow matte\n- На новой геометрии отключен Self shadow', pos='botCenter',
+                           fade=1, fst=6000, fot=6000)
+    if task_fields["task_activity_name"] == "light":
+        import_assembl()
+        import render
+        from importlib import reload
+        reload(render)
+        render.RenderSetup().import_settings()
+        cmds.delete(cmds.ls(type='unknown'))
+        cmds.inViewMessage(amg='- Assembl импортирован\n- Настройки рендера применены\n- Удалены unknown-ноды',
+                           pos='botCenter', fade=1, fst=6000, fot=6000)
 
 
 def import_env():
@@ -53,6 +65,18 @@ def import_env():
                         pm.parent(root_node, node_env)
     return env_path
 
+def import_assembl():
+    task_fields = config.task_fields(cmds.file(q=True, sn=True))
+    assembl_dir = os.path.join(config.project_path(), "episodes", task_fields["episode"], task_fields["scene"],
+                            task_fields["shot"], "assembl").replace("\\", "/")
+    print("[DEBUG] Find assembl scene", assembl_dir + "/*_B.mb")
+    assembl_paths = glob.glob(assembl_dir + "/*_B.mb")
+    if assembl_paths:
+        print("[DEBUG] Found %s" % assembl_paths[-1])
+        if os.path.isfile(assembl_paths[-1]):
+            base_name = os.path.basename(assembl_paths[-1])
+            name, ext = os.path.splitext(base_name)
+            cmds.file(assembl_paths[-1], r=True, namespace=name)
 
 def assign_shadow_matte(meshes, shader_name):
     node = pm.ls(shader_name)

@@ -2,12 +2,23 @@
     "file_path": [
         {
             "folder_path": "$(url[0])/episodes",
-            "name": "$(task_name)",
-            "publish": "episodes/$(url[2])/$(url[3])/$(url[4])/$(task_activity_name)",
-            "task_activity": "",
+            "local_postfix": "",
+            "name": "$(url[4])_$(task_activity_name)",
+            "publish": "episodes/$(url[2])/$(url[3])/$(url[4])/$(task_activity_name)/publish",
+            "task_activity": "comp",
             "ver_padding": 3,
             "ver_prefix": "_v",
             "version": "episodes/$(url[2])/$(url[3])/$(url[4])/$(task_activity_name)/work"
+        },
+        {
+            "folder_path": "$(url[0])/episodes",
+            "local_postfix": "",
+            "name": "$(url[4])_$(task_activity_name)",
+            "publish": "episodes/$(url[2])/$(url[3])/$(url[4])/light/work",
+            "task_activity": "light",
+            "ver_padding": 4,
+            "ver_prefix": ".",
+            "version": "episodes/$(url[2])/$(url[3])/$(url[4])/light/work"
         },
         {
             "folder_path": "$(url[0])/assets",
@@ -37,6 +48,14 @@
             "version": "episodes/$(url[2])/$(url[3])/$(url[4])/render/$(task_activity_name)/work"
         }
     ],
+    "processors": {
+        "maya": {
+            "open_post": {
+                "function": "open_post_func",
+                "script_path": "./path/to/script.py"
+            }
+        }
+    },
     "project_path": [
         {
             "paths": [
@@ -58,16 +77,5 @@
     "trans_mode": {
         "cerebro": true,
         "maya": true
-    },
-	"processors":
-    {
-        "maya":
-        {
-            "open_post":
-                {
-                    "script_path": "./path/to/script.py",
-                    "function": "open_post_func"
-                }
-        }
     }
 }

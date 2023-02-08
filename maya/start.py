@@ -32,11 +32,24 @@ class App(object):
         self.plugins_path = os.path.dirname(__file__) + "/plugins"
         self.project_name = self.get_project_name()
         put_env("MAYA_PRESET_PATH", "//alpha/projects/" + self.project_name)
+        self.install_cerebro()
         self.install_cgru()
         self.install_deadline()
         self.install_studio_library()
-        self.install_arnold()
+        # self.install_arnold()
         # self.install_megascan_livelink()
+
+    @staticmethod
+    def install_cerebro():
+        user = os.getenv({"Windows": "USERNAME"}[platform.system()])
+        put_env("CTENTACULO_LOCATION", r"c:\users\%s\appdata\roaming\cerebro\ctentaculo" % user)
+        put_env("MAYA_MODULE_PATH", os.getenv("CTENTACULO_LOCATION") + r"\tentaculo\api\imaya")
+        put_env("MAYA_SCRIPT_PATH", os.getenv("CTENTACULO_LOCATION") + r"\tentaculo\api\imaya")
+        put_env("PATH", os.getenv("CTENTACULO_LOCATION") + r"\python", at_begin=True)
+        put_env("PYTHONPATH", os.getenv("CTENTACULO_LOCATION"))
+        put_env("PYTHONPATH", os.getenv("CTENTACULO_LOCATION") + r"\tentaculo")
+        put_env("PYTHONPATH", os.getenv("CTENTACULO_LOCATION") + r"\tentaculo\api\imaya")
+        print("[It's alive] Install Cerebro Tentaculo")
 
     @staticmethod
     def install_cgru():

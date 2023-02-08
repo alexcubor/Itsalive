@@ -28,6 +28,7 @@ from functools import partial
 
 from maya_ui_proc import *
 from afanasyRenderJob import *
+import time
 
 self_prefix = 'meArnoldRender_'
 meArnoldRenderVer = '0.3.4'
@@ -600,9 +601,10 @@ class meArnoldRender ( object ) :
 			# cmds.setAttr(aiGlobals + '.shader_searchpath', ar_shader_search_path, type='string' )
 			cmds.setAttr(aiGlobals + '.texture_searchpath', ar_tex_search_path, type='string' )
 			#
-			# Clear .output_ass_filename to force using default filename from RenderGlobals
+			# output_ass_filename using STATIC deferred filename from RenderGlobals
 			#
-			cmds.setAttr(aiGlobals + '.output_ass_filename', '', type='string' )
+			scene_name = getMayaSceneName(withoutSubdir=False)
+			cmds.setAttr(aiGlobals + '.output_ass_filename', scene_name + '_deferred', type='string' )
 
 			cmds.workspace( fileRule=('ASS',self.ass_param['ass_dirname']) )
 			cmds.workspace( saveWorkspace=True )
@@ -621,8 +623,8 @@ class meArnoldRender ( object ) :
 				)
 				
 				# get scene name without extension
-				scene_name = getMayaSceneName( withoutSubdir=False)  
-				def_scene_name = scene_name + '_deferred'
+				time_stamp = time.strftime("%Y_%m_%d__%H_%M_%S", time.gmtime())
+				def_scene_name = scene_name + '_deferred_' + time_stamp
 				cmds.file(rename=def_scene_name)
 				# save it with default extension
 				self.def_scene_name = cmds.file(save=True, de=True)  
