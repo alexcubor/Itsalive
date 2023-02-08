@@ -35,6 +35,8 @@ def assembly():
         cmds.inViewMessage(amg='- Assembl импортирован\n- Настройки рендера применены\n- Удалены unknown-ноды',
                            pos='botCenter', fade=1, fst=6000, fot=6000)
 
+def assembly_cerebro(task_info, arg):
+    assembly()
 
 def import_env():
     task_fields = config.task_fields(cmds.file(q=True, sn=True))

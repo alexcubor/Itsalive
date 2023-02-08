@@ -50,9 +50,9 @@
     ],
     "processors": {
         "maya": {
-            "open_post": {
-                "function": "open_post_func",
-                "script_path": "./path/to/script.py"
+            "new_post": {
+                "function": "assembly_cerebro",
+                "script_path": "${TOOLS_PATH}/Itsalive/maya/scripts/assembler.py"
             }
         }
     },
