@@ -6,6 +6,7 @@ import platform
 import subprocess
 from pathlib import Path
 import argparse
+import shutil
 
 """
 Через этот скрипт запускается приложение с инструментарием Itsalive
@@ -43,6 +44,8 @@ class App(object):
     def install_cerebro():
         user = os.getenv({"Windows": "USERNAME"}[platform.system()])
         put_env("CTENTACULO_LOCATION", r"c:\users\%s\appdata\roaming\cerebro\ctentaculo" % user)
+        if not os.path.isdir(os.getenv("CTENTACULO_LOCATION")):
+            shutil.copy("//alpha/tools/Cerebro/ctentaculo", os.getenv("CTENTACULO_LOCATION"))
         put_env("MAYA_MODULE_PATH", os.getenv("CTENTACULO_LOCATION") + r"\tentaculo\api\imaya")
         put_env("MAYA_SCRIPT_PATH", os.getenv("CTENTACULO_LOCATION") + r"\tentaculo\api\imaya")
         put_env("PATH", os.getenv("CTENTACULO_LOCATION") + r"\python", at_begin=True)
