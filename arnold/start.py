@@ -32,7 +32,9 @@ class App(object):
         app_path = os.path.join(self.app_location, maya_app).replace("\\", "/")
         command = [app_path] + self.unknown
         print("[It's alive] Start command: ", command)
-        p = subprocess.Popen(command)
+        p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        for line in p.stdout:
+            print(line.strip())
         wait = p.wait()
         exit(wait)
 
