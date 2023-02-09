@@ -87,6 +87,20 @@ class App(object):
             pyset = open(pyfile, 'w')
             pyset.write(codefix)
             pyset.close()
+
+            pyfile = os.environ["MAYA_CGRU_LOCATION"] + "/afanasy/maya_ui_proc.py"
+            if not os.path.isfile(pyfile):
+                return
+            pyread = open(pyfile, 'r')
+            code = pyread.read()
+            template = "	labels.reverse()"
+            if template not in code:
+                return  # Значит код уже исправлен
+            codefix = code.replace(template, "	#labels.reverse()")
+            pyread.close()
+            pyset = open(pyfile, 'w')
+            pyset.write(codefix)
+            pyset.close()
         _fix()
 
     @staticmethod
