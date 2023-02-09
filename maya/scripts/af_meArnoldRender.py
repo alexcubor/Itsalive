@@ -353,10 +353,7 @@ class meArnoldRender ( object ) :
 		if ar_verbosity_level < 2:
 			ar_verbosity_level = 2
 
-		cmd_buffer = ['set "PATH=c:/program files/autodesk/maya2022/bin;'
-					  'c:/program files/autodesk/maya2022/plug-ins/xgen/bin;%PATH%\n"'
-					  'set "ARNOLD_PLUGIN_PATH=//alpha/tools/Arnold/Windows/maya2022-5.2.1/procedural"\n'
-					  '//alpha/tools/Arnold/Windows/maya2022-5.2.1/bin/kick.exe']
+		cmd_buffer = ['//alpha/tools/Python/Python39/python.exe //alpha/tools/Itsalive/arnold/start.py']
 		if ar_verbosity_level != 0:
 			cmd_buffer.append('-v %s' % ar_verbosity_level)
 
