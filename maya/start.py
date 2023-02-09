@@ -22,7 +22,8 @@ class App(object):
         os.environ["TOOLS_PATH"] = str(Path(os.path.dirname(__file__)).parent.parent).replace("\\", "/")
         print("[It's alive] Start tools from " + os.environ["TOOLS_PATH"])
         print("[It's alive] Maya initialization...")
-        os.environ["MAYA_VERSION"] = "2022"
+        if not os.getenv("MAYA_VERSION"):
+            os.environ["MAYA_VERSION"] = "2022"
         maya_locations = {"Windows": "C:/Program Files/Autodesk/Maya" + os.environ["MAYA_VERSION"]}
         os.environ["MAYA_LOCATION"] = maya_locations[platform.system()]
         put_env("PATH", os.environ["MAYA_LOCATION"] + "/bin")
@@ -37,7 +38,6 @@ class App(object):
         self.install_cgru()
         self.install_deadline()
         self.install_studio_library()
-        # self.install_arnold()
         # self.install_megascan_livelink()
 
     @staticmethod
@@ -109,10 +109,6 @@ class App(object):
         deadline_maya_path = deadline_work_path + "/submission/Maya/Client"
         put_env("MAYA_MODULE_PATH", deadline_maya_path + "/AllUsers")
         print("[It's alive] Install Deadline ")
-
-    @staticmethod
-    def install_arnold():
-        put_env("ARNOLD_PLUGIN_PATH", "//alpha/tools/Arnold/Windows/maya2022-5.2.1/procedurals")
 
     @staticmethod
     def install_studio_library():
