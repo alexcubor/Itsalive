@@ -6,11 +6,11 @@ import os
 import re
 from pathlib import Path
 try:
-    import config, sys
+    import lconfig, sys
 except:
     import sys
     sys.path.append(str(Path(__file__).parent.parent))
-    import config
+    import lconfig
 
 """
 Конвертирует все mov-файлы в полученной папке в 24 кадров/сек в виде png-сиквенции
@@ -28,12 +28,12 @@ def convert(directory=None):
         # Если в файле указаны теги шота, перемещает содержимое в папку шота
         group_names = re.match(".*(?P<episode>ep\w+).+(?P<scene>sc\w+).+(?P<shot>sh[0-9&a-z&A-Z]+)", name_no_ext)
         if group_names:
-            template = config.find_template({"folder_path": "$(url[0])/episodes", "task_activity": ""})
+            template = lconfig.find_template({"folder_path": "$(url[0])/episodes", "task_activity": ""})
             fields = group_names.groupdict()
             if "sc" not in fields["shot"]:
                 fields["shot"] = fields["scene"] + "_" + fields["shot"]
             fields.update(
-                {"project_path": config.project_path(), "task_activity_name": "mocap_data", "name": name_no_ext})
+                {"project_path": lconfig.project_path(), "task_activity_name": "mocap_data", "name": name_no_ext})
             path_to_sequence = template.apply_fields_publish(fields)
         if os.path.isdir(path_to_sequence):
             print("[Itsalive] Секвенция %s уже существует!" % path_to_sequence)

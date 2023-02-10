@@ -4,11 +4,11 @@ import shutil
 from pathlib import Path
 
 try:
-    import config, sys
+    import lconfig, sys
 except:
     import sys
     sys.path.append(str(Path(__file__).parent.parent))
-    import config
+    import lconfig
 from mocap import convert_to_24fps
 from mocap import copy_fbx
 

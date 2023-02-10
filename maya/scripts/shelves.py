@@ -5,7 +5,7 @@
 
 import maya.cmds as mc
 import os
-import config
+import lconfig
 import re
 
 
@@ -80,8 +80,8 @@ def create():
 
 
 def rebuild_command(command):
-    libname = re.findall("import (.*);", command)[0]
-    if config.is_dev():
+    libname = re.findall("import (\w+);", command)[0]
+    if lconfig.is_dev():
         return command.replace("import %s;" % libname, "import %s;" % libname + " from importlib import reload; reload(%s);" % libname)
     else:
         return command

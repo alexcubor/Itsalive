@@ -4,11 +4,11 @@ import os
 import re
 from pathlib import Path
 try:
-    import config, sys
+    import lconfig, sys
 except:
     import sys
     sys.path.append(str(Path(__file__).parent.parent))
-    import config
+    import lconfig
 
 
 def do(directory):
@@ -20,12 +20,12 @@ def do(directory):
         folder = fbx.replace("\\", "/").split("/")[-1]
         group_names = re.match(".*(?P<episode>ep\w+).+(?P<scene>sc\w+).+(?P<shot>sh[0-9&a-z&A-Z]+)", folder)
         if group_names:
-            template = config.find_template({"folder_path": "$(url[0])/episodes", "task_activity": ""})
+            template = lconfig.find_template({"folder_path": "$(url[0])/episodes", "task_activity": ""})
             fields = group_names.groupdict()
             if "sc" not in fields["shot"]:
                 fields["shot"] = fields["scene"] + "_" + fields["shot"]
             fields.update(
-                {"project_path": config.project_path(), "task_activity_name": "mocap_data", "name": folder})
+                {"project_path": lconfig.project_path(), "task_activity_name": "mocap_data", "name": folder})
             copy_fbx = template.apply_fields_publish(fields)
         if group_names:
             print("[Itsalive] Успех! Файл сохранён в %s" % copy_fbx)
