@@ -603,7 +603,7 @@ class meArnoldRender ( object ) :
 			#
 			# output_ass_filename using STATIC deferred filename from RenderGlobals
 			#
-			scene_name = getMayaSceneName(withoutSubdir=False)
+			scene_name = getMayaSceneName(withoutSubdir=True)
 			cmds.setAttr(aiGlobals + '.output_ass_filename', scene_name + '_deferred', type='string' )
 
 			cmds.workspace( fileRule=('ASS',self.ass_param['ass_dirname']) )
