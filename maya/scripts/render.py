@@ -25,17 +25,18 @@ class RenderSetup(QtWidgets.QWidget):  # TODO Add exporter render settings for e
             print("[It's alive] Error import render_settings preset!")
 
         # Установка путей под шот
+        cmds.setAttr("defaultRenderGlobals.currentRenderer", "arnold", type="string")
         context = lconfig.FilePath(cmds.file(q=True, sn=True))
         if context.fields:
             context.fields["task_activity_name"] = "render"
             context.fields["name"] = "maya"
             image_path = lconfig.Template(context.template).apply_fields_publish(context.fields) + "/v001/<RenderLayer>/<RenderPass>/" + context.fields["shot"] + "_<RenderPass>"
             #cmds.workspace(fileRule=['images', image_path])
-            pm.Attribute("defaultRenderGlobals.imageFilePrefix").set(image_path)
-            pm.Attribute("defaultArnoldRenderOptions.abortOnError").set(0)
-            pm.Attribute("defaultArnoldRenderOptions.GITransmissionDepth").set(4)
-            pm.Attribute("defaultArnoldRenderOptions.autoTransparencyDepth").set(4)
-            pm.Attribute("defaultArnoldRenderOptions.plugin_searchpath").set("//alpha/tools/Arnold/Windows/maya2022-5.2.1/procedurals")
+        pm.Attribute("defaultRenderGlobals.imageFilePrefix").set(image_path)
+        pm.Attribute("defaultArnoldRenderOptions.abortOnError").set(0)
+        pm.Attribute("defaultArnoldRenderOptions.GITransmissionDepth").set(4)
+        pm.Attribute("defaultArnoldRenderOptions.autoTransparencyDepth").set(4)
+        pm.Attribute("defaultArnoldRenderOptions.plugin_searchpath").set("//alpha/tools/Arnold/Windows/maya2022-5.2.1/procedurals")
 
         def _setup_camera():
             for cam in cmds.ls(type="camera"):

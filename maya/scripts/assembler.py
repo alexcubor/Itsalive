@@ -84,6 +84,7 @@ def assembly():
         cmds.inViewMessage(amg='- Assembl импортирован\n- Настройки рендера применены\n- Удалены unknown-ноды\n'
                            '- Установлен диапазон кадров',
                            pos='botCenter', fade=1, fst=6000, fot=6000)
+        cmds.file(force=True, save=1, options="v=0")
 
 def assembly_cerebro(task_info, arg):
     assembly()
