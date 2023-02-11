@@ -29,6 +29,7 @@ from functools import partial
 from maya_ui_proc import *
 from afanasyRenderJob import *
 import time
+import re
 
 self_prefix = 'meArnoldRender_'
 meArnoldRenderVer = '0.3.4'
@@ -423,13 +424,11 @@ class meArnoldRender ( object ) :
 		"""
 		pad_str = getPadStr( self.job_param['job_padding'], True )
 
-		images = cmds.renderSettings(
-			fullPath=True,
-			genericFrameImageName=('@%s@' % pad_str)
-		)
+		imageFileName = cmds.renderSettings(imageGenericName=True)[0]
+		imageFileName = imageFileName.replace("<RenderLayer>", cmds.editRenderLayerGlobals(query=True, currentRenderLayer=True).replace("defaultRenderLayer", "masterLayer"))
+		imageFileName = imageFileName.replace("<RenderPass>", cmds.getAttr("defaultArnoldRenderOptions.displayAOV"))
+		imageFileName = re.sub("%\dn", '@%s@' % pad_str, imageFileName)
 
-		#imageFileName = ';'.join (images)
-		imageFileName = str(images[0])
 		( fileName, ext ) = os.path.splitext ( imageFileName )
 		imageFileName = fileName + '.' + self.getImageFormat ()
 		return fromNativePath(imageFileName)
@@ -819,7 +818,6 @@ class meArnoldRender ( object ) :
 				
 				# Set block Post command for cleanup
 				if job_cleanup_ass :
-					import re
 					# replace frame number '@####@' with '*' wildcard
 					input_files = re.sub ( '@[#]+@', '*', frame_block.input_files )
 					frame_block.af_block.setCmdPost(
