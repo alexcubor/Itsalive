@@ -23,6 +23,7 @@ import string
 import maya.OpenMaya as OpenMaya
 import maya.cmds as cmds
 import maya.mel as mel
+import maya.app.renderSetup.model.renderSetup as renderSetup
 
 from functools import partial
 
@@ -77,10 +78,7 @@ class meArnoldRender ( object ) :
 
 		self.rootDir = cmds.workspace(q=True, rootDirectory=True)
 		self.rootDir = self.rootDir[:-1]
-		self.layer = cmds.editRenderLayerGlobals(
-			query=True,
-			currentRenderLayer=True
-		)
+		self.layer = renderSetup.instance().getVisibleRenderLayer().name()
 
 		self.job = None
 
@@ -425,7 +423,7 @@ class meArnoldRender ( object ) :
 		pad_str = getPadStr( self.job_param['job_padding'], True )
 
 		imageFileName = cmds.renderSettings(imageGenericName=True)[0]
-		imageFileName = imageFileName.replace("<RenderLayer>", cmds.editRenderLayerGlobals(query=True, currentRenderLayer=True).replace("defaultRenderLayer", "masterLayer"))
+		imageFileName = imageFileName.replace("<RenderLayer>", self.layer)
 		imageFileName = imageFileName.replace("<RenderPass>", cmds.getAttr("defaultArnoldRenderOptions.displayAOV"))
 		imageFileName = re.sub("%\dn", '@%s@' % pad_str, imageFileName)
 
