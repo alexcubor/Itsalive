@@ -621,12 +621,13 @@ class meArnoldRender ( object ) :
 				
 				# get scene name without extension
 				time_stamp = time.strftime("%Y_%m_%d__%H_%M_%S", time.gmtime())
-				def_scene_name = scene_name + '_deferred_' + time_stamp
-				cmds.file(rename=def_scene_name)
+				scene_path = getMayaSceneName(withoutSubdir=False)
+				def_scene_path = scene_path + '_deferred_' + time_stamp
+				cmds.file(rename=def_scene_path)
 				# save it with default extension
 				self.def_scene_name = cmds.file(save=True, de=True)  
 				# rename scene back
-				cmds.file(rename=scene_name)  
+				cmds.file(rename=scene_path)
 
 				cmds.setAttr(
 					defGlobals + '.imageFilePrefix',
