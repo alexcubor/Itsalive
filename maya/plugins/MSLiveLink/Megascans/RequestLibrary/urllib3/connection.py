@@ -38,7 +38,7 @@ from .exceptions import (
 )
 from .packages.ssl_match_hostname import match_hostname, CertificateError
 
-from maya.plugins.MSLiveLink.Megascans.RequestLibrary.urllib3.util import (
+from .util.ssl_ import (
     resolve_cert_reqs,
     resolve_ssl_version,
     assert_fingerprint,
@@ -47,7 +47,7 @@ from maya.plugins.MSLiveLink.Megascans.RequestLibrary.urllib3.util import (
 )
 
 
-from maya.plugins.MSLiveLink.Megascans.RequestLibrary.urllib3.util import connection
+from .util import connection
 
 from ._collections import HTTPHeaderDict
 

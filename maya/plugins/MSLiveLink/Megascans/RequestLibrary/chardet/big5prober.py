@@ -28,7 +28,7 @@
 from .mbcharsetprober import MultiByteCharSetProber
 from .codingstatemachine import CodingStateMachine
 from .chardistribution import Big5DistributionAnalysis
-from maya.plugins.MSLiveLink.Megascans.RequestLibrary.chardet.mbcssm import BIG5_SM_MODEL
+from .mbcssm import BIG5_SM_MODEL
 
 
 class Big5Prober(MultiByteCharSetProber):

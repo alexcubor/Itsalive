@@ -29,7 +29,7 @@ from .mbcharsetprober import MultiByteCharSetProber
 from .codingstatemachine import CodingStateMachine
 from .chardistribution import SJISDistributionAnalysis
 from .jpcntx import SJISContextAnalysis
-from maya.plugins.MSLiveLink.Megascans.RequestLibrary.chardet.mbcssm import SJIS_SM_MODEL
+from .mbcssm import SJIS_SM_MODEL
 from .enums import ProbingState, MachineState
 
 

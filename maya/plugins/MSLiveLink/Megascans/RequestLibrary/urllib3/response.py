@@ -25,7 +25,7 @@ from .exceptions import (
 from .packages.six import string_types as basestring, PY3
 from .packages.six.moves import http_client as httplib
 from .connection import HTTPException, BaseSSLError
-from maya.plugins.MSLiveLink.Megascans.RequestLibrary.urllib3.util import is_fp_closed, is_response_to_head
+from .util.response import is_fp_closed, is_response_to_head
 
 log = logging.getLogger(__name__)
 

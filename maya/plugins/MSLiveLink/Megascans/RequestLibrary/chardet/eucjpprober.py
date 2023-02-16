@@ -30,7 +30,7 @@ from .mbcharsetprober import MultiByteCharSetProber
 from .codingstatemachine import CodingStateMachine
 from .chardistribution import EUCJPDistributionAnalysis
 from .jpcntx import EUCJPContextAnalysis
-from maya.plugins.MSLiveLink.Megascans.RequestLibrary.chardet.mbcssm import EUCJP_SM_MODEL
+from .mbcssm import EUCJP_SM_MODEL
 
 
 class EUCJPProber(MultiByteCharSetProber):

@@ -28,7 +28,7 @@
 from .charsetprober import CharSetProber
 from .enums import ProbingState, MachineState
 from .codingstatemachine import CodingStateMachine
-from maya.plugins.MSLiveLink.Megascans.RequestLibrary.chardet.mbcssm import UTF8_SM_MODEL
+from .mbcssm import UTF8_SM_MODEL
 
 
 

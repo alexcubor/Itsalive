@@ -1,2 +1,2 @@
-+ Megascans 7.0 .
-scripts: .
++ Megascans 7.0 ./
+scripts: ./

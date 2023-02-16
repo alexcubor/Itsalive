@@ -28,7 +28,7 @@
 from .mbcharsetprober import MultiByteCharSetProber
 from .codingstatemachine import CodingStateMachine
 from .chardistribution import EUCTWDistributionAnalysis
-from maya.plugins.MSLiveLink.Megascans.RequestLibrary.chardet.mbcssm import EUCTW_SM_MODEL
+from .mbcssm import EUCTW_SM_MODEL
 
 class EUCTWProber(MultiByteCharSetProber):
     def __init__(self):

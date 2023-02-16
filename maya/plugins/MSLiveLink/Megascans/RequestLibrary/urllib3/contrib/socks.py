@@ -58,7 +58,7 @@ from ..connection import HTTPConnection, HTTPSConnection
 from ..connectionpool import HTTPConnectionPool, HTTPSConnectionPool
 from ..exceptions import ConnectTimeoutError, NewConnectionError
 from ..poolmanager import PoolManager
-from maya.plugins.MSLiveLink.Megascans.RequestLibrary.urllib3.util import parse_url
+from ..util.url import parse_url
 
 try:
     import ssl

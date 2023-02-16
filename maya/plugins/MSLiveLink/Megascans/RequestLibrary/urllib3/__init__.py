@@ -10,10 +10,10 @@ from . import exceptions
 from .filepost import encode_multipart_formdata
 from .poolmanager import PoolManager, ProxyManager, proxy_from_url
 from .response import HTTPResponse
-from maya.plugins.MSLiveLink.Megascans.RequestLibrary.urllib3.util import make_headers
-from maya.plugins.MSLiveLink.Megascans.RequestLibrary.urllib3.util import get_host
-from maya.plugins.MSLiveLink.Megascans.RequestLibrary.urllib3.util import Timeout
-from maya.plugins.MSLiveLink.Megascans.RequestLibrary.urllib3.util import Retry
+from .util.request import make_headers
+from .util.url import get_host
+from .util.timeout import Timeout
+from .util.retry import Retry
 
 
 # Set default logging handler to avoid "No handler found" warnings.

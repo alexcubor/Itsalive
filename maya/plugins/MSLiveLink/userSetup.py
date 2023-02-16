@@ -6,7 +6,7 @@ This Module :
 """
 
 import pymel.core as pm
-from maya.plugins.MSLiveLink.LiveLink import initLiveLink
+from LiveLink import initLiveLink
 from Megascans import Installer
 from DHI import DHIPluginLoader
 

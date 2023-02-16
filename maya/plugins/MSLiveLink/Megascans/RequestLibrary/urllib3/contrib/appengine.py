@@ -55,8 +55,8 @@ from ..exceptions import (
 
 from ..request import RequestMethods
 from ..response import HTTPResponse
-from maya.plugins.MSLiveLink.Megascans.RequestLibrary.urllib3.util import Timeout
-from maya.plugins.MSLiveLink.Megascans.RequestLibrary.urllib3.util import Retry
+from ..util.timeout import Timeout
+from ..util.retry import Retry
 from . import _appengine_environ
 
 try:

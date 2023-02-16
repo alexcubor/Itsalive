@@ -28,7 +28,7 @@
 from .chardistribution import EUCKRDistributionAnalysis
 from .codingstatemachine import CodingStateMachine
 from .mbcharsetprober import MultiByteCharSetProber
-from maya.plugins.MSLiveLink.Megascans.RequestLibrary.chardet.mbcssm import CP949_SM_MODEL
+from .mbcssm import CP949_SM_MODEL
 
 
 class CP949Prober(MultiByteCharSetProber):

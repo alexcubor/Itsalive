@@ -16,8 +16,8 @@ from .exceptions import (
 from .packages import six
 from .packages.six.moves.urllib.parse import urljoin
 from .request import RequestMethods
-from maya.plugins.MSLiveLink.Megascans.RequestLibrary.urllib3.util import parse_url
-from maya.plugins.MSLiveLink.Megascans.RequestLibrary.urllib3.util import Retry
+from .util.url import parse_url
+from .util.retry import Retry
 
 
 __all__ = ["PoolManager", "ProxyManager", "proxy_from_url"]

@@ -38,19 +38,19 @@ from .connection import (
 from .request import RequestMethods
 from .response import HTTPResponse
 
-from maya.plugins.MSLiveLink.Megascans.RequestLibrary.urllib3.util import is_connection_dropped
-from maya.plugins.MSLiveLink.Megascans.RequestLibrary.urllib3.util import set_file_position
-from maya.plugins.MSLiveLink.Megascans.RequestLibrary.urllib3.util import assert_header_parsing
-from maya.plugins.MSLiveLink.Megascans.RequestLibrary.urllib3.util import Retry
-from maya.plugins.MSLiveLink.Megascans.RequestLibrary.urllib3.util import Timeout
-from maya.plugins.MSLiveLink.Megascans.RequestLibrary.urllib3.util import (
+from .util.connection import is_connection_dropped
+from .util.request import set_file_position
+from .util.response import assert_header_parsing
+from .util.retry import Retry
+from .util.timeout import Timeout
+from .util.url import (
     get_host,
     parse_url,
     Url,
     _normalize_host as normalize_host,
     _encode_target,
 )
-from maya.plugins.MSLiveLink.Megascans.RequestLibrary.urllib3.util import LifoQueue
+from .util.queue import LifoQueue
 
 
 xrange = six.moves.xrange
