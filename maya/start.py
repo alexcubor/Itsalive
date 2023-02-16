@@ -117,7 +117,7 @@ class App(object):
 
     def install_megascan_livelink(self):
         put_env("MAYA_MODULE_PATH", self.plugins_path + "/MSLiveLink")
-        print("[It's alive] Install MegaScan LiveLink 7.0", self.plugins_path + "/MSLiveLink")
+        print("[It's alive] Install MegaScan LiveLink 7.0")
 
     def get_project_name(self):
         if self.args.p:
