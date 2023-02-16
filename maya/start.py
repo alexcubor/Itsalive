@@ -128,7 +128,7 @@ class App(object):
     # Запуск Maya
     def run(self):
         maya_app = {'Windows': r'bin/%s.exe' % self.app_name}[platform.system()]
-        app_path = os.path.join(os.getenv("MAYA_LOCATION"), maya_app)
+        app_path = os.path.join(os.getenv("MAYA_LOCATION"), maya_app).replace("\\", "/")
         command = [app_path] + self.unknown
         print("[It's alive] Start command: ", command)
         p = subprocess.Popen(command)
