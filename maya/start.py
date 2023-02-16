@@ -31,14 +31,14 @@ class App(object):
         self.app_name = "maya"
         if self.args.app:
             self.app_name = self.args.app
-        self.plugins_path = os.path.dirname(__file__) + "/plugins"
+        self.plugins_path = os.path.dirname(__file__).replace("\\", "/") + "/plugins"
         self.project_name = self.get_project_name()
         put_env("MAYA_PRESET_PATH", "//alpha/projects/" + self.project_name)
         self.install_cerebro()
         self.install_cgru()
         self.install_deadline()
         self.install_studio_library()
-        # self.install_megascan_livelink()
+        self.install_megascan_livelink()
 
     @staticmethod
     def install_cerebro():
@@ -117,8 +117,7 @@ class App(object):
 
     def install_megascan_livelink(self):
         put_env("MAYA_MODULE_PATH", self.plugins_path + "/MSLiveLink")
-        put_env("PYTHONPATH", self.plugins_path + "/MSLiveLink")
-        print("[It's alive] Install MegaScan LiveLink 7.0")
+        print("[It's alive] Install MegaScan LiveLink 7.0", self.plugins_path + "/MSLiveLink")
 
     def get_project_name(self):
         if self.args.p:
