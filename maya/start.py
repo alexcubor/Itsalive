@@ -131,6 +131,8 @@ class App(object):
         command = [app_path] + self.unknown
         print("[It's alive] Start command: ", command)
         p = subprocess.Popen(command)
+        for line in p.stdout:
+            print(line.strip())
         wait = p.wait()
         exit(wait)
 
