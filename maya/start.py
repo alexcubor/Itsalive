@@ -16,10 +16,14 @@ import re
 
 class App(object):
     def __init__(self):
-        parser = argparse.ArgumentParser()
-        parser.add_argument("-app", help="Application name")
-        #parser.add_argument("-p", help="Project name")
-        self.args, self.unknown = parser.parse_known_args()
+        self.args = sys.argv[1:]
+        os.environ["PROJECT_NAME"] = sys.argv[sys.argv.index("-p") + 1]
+        self.args.remove("-p"), self.args.remove(os.environ["PROJECT_NAME"])
+        if "-app" in sys.argv:
+            self.app_name = sys.argv[sys.argv.index("-app") + 1]
+            self.args.remove("-app"), self.args.remove(self.app_name)
+        else:
+            self.app_name = "maya"
         os.environ["TOOLS_PATH"] = str(Path(os.path.dirname(__file__)).parent.parent).replace("\\", "/")
         print("[It's alive] Start tools from " + os.environ["TOOLS_PATH"])
         print("[It's alive] Maya initialization...")
@@ -29,9 +33,6 @@ class App(object):
         os.environ["MAYA_LOCATION"] = maya_locations[platform.system()]
         put_env("PATH", os.environ["MAYA_LOCATION"] + "/bin")
         put_env("MAYA_MODULE_PATH", os.path.dirname(__file__))
-        self.app_name = "maya"
-        if self.args.app:
-            self.app_name = self.args.app
         self.plugins_path = os.path.dirname(__file__).replace("\\", "/") + "/plugins"
         if not os.getenv("PROJECT_NAME"):
             os.environ["PROJECT_NAME"] = "3033"
@@ -128,11 +129,11 @@ class App(object):
     def run(self):
         maya_app = {'Windows': r'bin/%s.exe' % self.app_name}[platform.system()]
         app_path = os.path.join(os.getenv("MAYA_LOCATION"), maya_app).replace("\\", "/")
-        command = [app_path] + self.unknown
+        command = [app_path] + self.args
         print("[It's alive] Start command: ", command)
         p = subprocess.Popen(command)
-        for line in p.stdout:
-            print(line.strip())
+        #for line in p.stdout:
+        #    print(line.strip())
         wait = p.wait()
         exit(wait)
 
