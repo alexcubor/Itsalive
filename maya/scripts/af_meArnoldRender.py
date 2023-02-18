@@ -73,8 +73,7 @@ class meArnoldRender ( object ) :
 		print ('sys.platform = %s self.os = %s' % (sys.platform, self.os))
 
 		if cmds.getAttr('defaultRenderGlobals.currentRenderer') != 'arnold':
-			cmds.warning('Arnold is not current renderer!')
-			return
+			cmds.setAttr("defaultRenderGlobals.currentRenderer", "arnold", type="string")
 
 		self.rootDir = cmds.workspace(q=True, rootDirectory=True)
 		self.rootDir = self.rootDir[:-1]
@@ -90,7 +89,7 @@ class meArnoldRender ( object ) :
 		self.bkburn_param = {}
 
 		self.assgenCommand = 'arnoldExportAss'
-		self.def_assgenCommand = 'mayarender -r arnold'
+		self.def_assgenCommand = '//alpha/tools/Python/Python39/python.exe //alpha/tools/Itsalive/maya/start.py -app Render -r arnold'
 		# maya scene name used for deferred .ass generation
 		self.def_scene_name = ''  
 		
@@ -637,11 +636,7 @@ class meArnoldRender ( object ) :
 			else:
 				renderLayers = []
 				# save current layer
-				current_layer = \
-					cmds.editRenderLayerGlobals(
-						q=True,
-						currentRenderLayer=True
-					)
+				current_layer = renderSetup.instance().getVisibleRenderLayer().name()
 				if exportAllRenderLayers:
 					renderLayers = getRenderLayersList(True)  # renderable only
 				else:

@@ -7,6 +7,7 @@ import subprocess
 from pathlib import Path
 import argparse
 import shutil
+import re
 
 """
 Через этот скрипт запускается приложение с инструментарием Itsalive
@@ -17,7 +18,7 @@ class App(object):
     def __init__(self):
         parser = argparse.ArgumentParser()
         parser.add_argument("-app", help="Application name")
-        parser.add_argument("-p", help="Project name")
+        #parser.add_argument("-p", help="Project name")
         self.args, self.unknown = parser.parse_known_args()
         os.environ["TOOLS_PATH"] = str(Path(os.path.dirname(__file__)).parent.parent).replace("\\", "/")
         print("[It's alive] Start tools from " + os.environ["TOOLS_PATH"])
@@ -32,9 +33,13 @@ class App(object):
         if self.args.app:
             self.app_name = self.args.app
         self.plugins_path = os.path.dirname(__file__).replace("\\", "/") + "/plugins"
-        self.project_name = self.get_project_name()
-        put_env("MAYA_PRESET_PATH", "//alpha/projects/" + self.project_name)
-        self.install_cerebro()
+        if not os.getenv("PROJECT_NAME"):
+            os.environ["PROJECT_NAME"] = "3033"
+        put_env("MAYA_PRESET_PATH", "//alpha/projects/" + os.environ["PROJECT_NAME"])
+        if os.getenv("PYTHONHOME"):
+            del os.environ["PYTHONHOME"]
+        if self.app_name != "Render":
+            self.install_cerebro()
         self.install_cgru()
         self.install_deadline()
         self.install_studio_library()
@@ -118,12 +123,6 @@ class App(object):
     def install_megascan_livelink(self):
         put_env("MAYA_MODULE_PATH", self.plugins_path + "/MSLiveLink")
         print("[It's alive] Install MegaScan LiveLink 7.0")
-
-    def get_project_name(self):
-        if self.args.p:
-            os.environ["PROJECT_NAME"] = self.args.p
-        print("[It's alive] Project name: " + self.args.p)
-        return self.args.p
 
     # Запуск Maya
     def run(self):
