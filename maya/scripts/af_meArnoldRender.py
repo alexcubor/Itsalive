@@ -89,7 +89,7 @@ class meArnoldRender ( object ) :
 		self.bkburn_param = {}
 
 		self.assgenCommand = 'arnoldExportAss'
-		self.def_assgenCommand = '//alpha/tools/Python/Python39/python.exe //alpha/tools/Itsalive/maya/start.py ' \
+		self.def_assgenCommand = 'python //alpha/tools/Itsalive/maya/start.py ' \
 								 '-app Render -p %s -r arnold' % os.getenv("PROJECT_NAME")
 		# maya scene name used for deferred .ass generation
 		self.def_scene_name = ''  
