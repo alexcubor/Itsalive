@@ -52,7 +52,7 @@
         "maya": {
             "new_post": {
                 "function": "assembly_cerebro",
-                "script_path": "${TOOLS_PATH}/Itsalive/maya/scripts/assembler.py"
+                "script_path": "${TOOLS_PATH}/Itsalive/maya/scripts/batch/assembler.py"
             }
         }
     },
