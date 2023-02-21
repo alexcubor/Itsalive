@@ -20,71 +20,10 @@ class RenderSetup(QtWidgets.QWidget):  # TODO Add exporter render settings for e
     def import_settings(self):
         render_settings = self.preset_directory + "/render_settings.json"
         try:
-            self.import_json(render_settings)
+            pass#self.import_json(render_settings)
         except:
             print("[It's alive] Error import render_settings preset!")
-
-        # Установка путей под шот
-        cmds.setAttr("defaultRenderGlobals.currentRenderer", "arnold", type="string")
-        context = lconfig.FilePath(cmds.file(q=True, sn=True))
-        if context.fields:
-            context.fields["task_activity_name"] = "render"
-            context.fields["name"] = "maya"
-            image_path = lconfig.Template(context.template).apply_fields_publish(context.fields) + "/v001/<RenderLayer>/<RenderPass>/" + context.fields["shot"] + "_<RenderPass>"
-            #cmds.workspace(fileRule=['images', image_path])
-        pm.Attribute("defaultRenderGlobals.imageFilePrefix").set(image_path)
-        pm.Attribute("defaultArnoldRenderOptions.abortOnError").set(0)
-        pm.Attribute("defaultArnoldRenderOptions.GITransmissionDepth").set(4)
-        pm.Attribute("defaultArnoldRenderOptions.autoTransparencyDepth").set(4)
         pm.Attribute("defaultArnoldRenderOptions.plugin_searchpath").set("//alpha/tools/Arnold/Windows/maya2022-5.2.1/procedurals")
-
-        def _setup_camera():
-            for cam in cmds.ls(type="camera"):
-                if ":cam" in cam.lower():
-                    pm.Attribute(cam + ".renderable").set(1)
-                    pm.Attribute(cam + ".aiUseGlobalShutter").set(0)
-                    pm.Attribute(cam + ".locatorScale").set(25)
-                else:
-                    pm.Attribute(cam + ".renderable").set(0)
-        _setup_camera()
-
-        def _driver_32bit(aov):
-            driver = pm.ls("_32bitArnoldDriver")[0] if pm.ls("_32bitArnoldDriver") else \
-                pm.createNode("aiAOVDriver", name="_32bitArnoldDriver")
-            pm.Attribute(driver.preserveLayerName).set(1)
-            pm.Attribute(driver.exrTiled).set(1)
-            pm.Attribute(driver.autocrop).set(1)
-            pm.connectAttr(driver.message, pm.Attribute(aov.name() + ".outputs")[0].driver, f=True)
-
-        def _aov_z():
-            aov = pm.ls("aiAOV_Z")[0] if pm.ls("aiAOV_Z") else pm.createNode("aiAOV", name="aiAOV_Z")
-            _driver_32bit(aov)
-        _aov_z()
-
-        def _aov_uv():
-            aov_uv = pm.ls("aiAOV_uv")[0] if pm.ls("aiAOV_uv") else None
-            if aov_uv:
-                if not aov_uv.defaultValue.connections():
-                    utility = pm.ls("aiUtility1")[0] if pm.ls("aiUtility1") else pm.createNode("aiUtility", name="aiUtility1")
-                    pm.connectAttr(utility.outColor, aov_uv.defaultValue, f=True)
-                    pm.Attribute(utility.shadeMode).set(2)
-                    pm.Attribute(utility.colorMode).set(5)
-        _aov_uv()
-
-        def _aov_crypto():
-            aov_crypto_mat = pm.ls("aiAOV_crypto_material")[0] if pm.ls("aiAOV_crypto_material") else None
-            if aov_crypto_mat:
-                if not aov_crypto_mat.defaultValue.connections():
-                    crypto = pm.ls("_aov_cryptomatte")[0] if pm.ls("_aov_cryptomatte") else pm.createNode("cryptomatte",
-                                                                                               name="_aov_cryptomatte")
-                    pm.connectAttr(crypto.outColor, aov_crypto_mat.defaultValue, f=True)
-            aov_crypto_obj = pm.ls("aiAOV_crypto_object")[0] if pm.ls("aiAOV_crypto_object") else None
-            if aov_crypto_obj:
-                if not aov_crypto_obj.defaultValue.connections():
-                    crypto = pm.ls("_aov_cryptomatte")[0] if pm.ls("_aov_cryptomatte") else pm.createNode("cryptomatte",
-                                                                                               name="_aov_cryptomatte")
-                    pm.connectAttr(crypto.outColor, aov_crypto_obj.defaultValue, f=True)
-        _aov_crypto()
 
         def _aov_position():
             aov = pm.ls("aiAOV_position")[0] if pm.ls("aiAOV_position") else None
@@ -127,6 +66,12 @@ class RenderSetup(QtWidgets.QWidget):  # TODO Add exporter render settings for e
                 aov_selection += " or RGBA_" + lg
             pm.Attribute(denoiser.layerSelection).set(aov_selection)
         # _add_denoiser() отключен, так как для персонажки плохо смотрится
+
+        from batch import assembler
+        reload(assembler)
+        reload(assembler.commands)
+        print(assembler)
+        assembler.assembly()
 
 
     @staticmethod
