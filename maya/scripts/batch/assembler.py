@@ -6,7 +6,13 @@
 import maya.cmds as cmds
 from importlib import reload
 import lconfig
-from . import commands
+try:
+    from . import commands
+except:
+    import sys
+    import os
+    sys.path.append(os.path.dirname(__file__))
+    import commands
 if lconfig.is_dev():
     from importlib import reload
     reload(lconfig)
@@ -23,9 +29,10 @@ def assembly():
     # Run commands for "light" tasks
     task_fields = lconfig.task_fields(cmds.file(q=True, sn=True))
     if task_fields["task_activity_name"] == "light":
-        for py_command in command_list:
-            #print("commands." + py_command)
-            #exec(reload("commands." + py_command))
+        queue_command = [x for x in command_list if "prepare_render." in x]
+        queue_command += [x for x in command_list if "render_settings." in x]
+        queue_command += [x for x in command_list if "aovs." in x]
+        for py_command in queue_command:
             command = "commands." + py_command + ".do()"
             exec(command)
         cmds.file(force=True, save=1, options="v=0")
