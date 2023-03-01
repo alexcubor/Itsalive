@@ -16,6 +16,7 @@ except:
 if lconfig.is_dev():
     from importlib import reload
     reload(lconfig)
+    reload(commands)
 
 
 def assembly():

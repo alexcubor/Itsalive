@@ -147,7 +147,7 @@ def server_path():
 
 
 def projects_path():
-    os.path.join(server_path(), "projects")
+    return os.path.join(server_path(), "projects")
 
 
 def project_path():

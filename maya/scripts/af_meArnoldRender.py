@@ -74,6 +74,14 @@ class meArnoldRender ( object ) :
 
 		if cmds.getAttr('defaultRenderGlobals.currentRenderer') != 'arnold':
 			cmds.setAttr("defaultRenderGlobals.currentRenderer", "arnold", type="string")
+		import render
+		if len(render.get_light_groups()) != len([x for x in cmds.ls(type="aiAOV") if "aiAOV_light_" in x]):
+			result = cmds.confirmDialog(title='Warning LightGroup', message="Some new lightgroups do not add to custom "
+																			"AOVs 'light_*'. Can you create custom AOVs?",
+							   			button=["Add AOVs", "Skip"], defaultButton='Add AOVs')
+			if result == "Add AOVs":
+				from batch.assembler import commands
+				commands.aovs.RGBA_without_specular.do()
 
 		self.rootDir = cmds.workspace(q=True, rootDirectory=True)
 		self.rootDir = self.rootDir[:-1]
@@ -352,7 +360,7 @@ class meArnoldRender ( object ) :
 		if ar_verbosity_level < 2:
 			ar_verbosity_level = 2
 
-		cmd_buffer = ['//alpha/tools/Python/Python39/python.exe //alpha/tools/Itsalive/arnold/start.py']
+		cmd_buffer = ['python //alpha/tools/Itsalive/arnold/start.py']
 		if ar_verbosity_level != 0:
 			cmd_buffer.append('-v %s' % ar_verbosity_level)
 
@@ -387,6 +395,8 @@ class meArnoldRender ( object ) :
 		if layer is not None:
 			if layer == 'defaultRenderLayer':
 				layer = 'masterLayer'
+			#else:
+			#	layer = "rs_" + layer
 
 			if not (len(getRenderLayersList(False)) == 1):
 				filename += '/' + layer
@@ -399,8 +409,17 @@ class meArnoldRender ( object ) :
 			#	os.path.basename(self.def_scene_name)
 			#)
 
+		renderable_cameras = [cmds.listRelatives(x, p=1)[0].replace(":", "_")
+							  for x in cmds.ls(type="camera") if cmds.getAttr(x + ".renderable")]
+		if len(renderable_cameras) > 1:
+			main_camera = None
+			for cam in cmds.ls(type="camera"):
+				if ":cam" in cam.lower():
+					main_camera = cam
+			filename += "/" + main_camera
+
 		filename += '/%s' % scenename
-		filename = cmds.workspace(expandName=filename)
+		#filename = cmds.workspace(expandName=filename)
 
 		if suffix:
 			pad_str = getPadStr( self.job_param['job_padding'], True )
@@ -639,7 +658,7 @@ class meArnoldRender ( object ) :
 				# save current layer
 				current_layer = renderSetup.instance().getVisibleRenderLayer().name()
 				if exportAllRenderLayers:
-					renderLayers = getRenderLayersList(True)  # renderable only
+					renderLayers = [x.replace("rs_", "") for x in getRenderLayersList(True)]  # renderable only
 				else:
 					# use only current layer
 					renderLayers.append(current_layer)
@@ -653,7 +672,11 @@ class meArnoldRender ( object ) :
 					cmds.setAttr(layer + '.renderable', True)
 					# print 'set current layer renderable (%s)' % layer
 
-					cmds.editRenderLayerGlobals(currentRenderLayer=layer)
+					rs = renderSetup.instance()
+					if layer == "defaultRenderLayer":
+						rs.switchToLayerUsingLegacyName(layer)
+					else:
+						rs.switchToLayer(rs.getRenderLayer(layer))
 
 					assgen_cmd = \
 						self.assgenCommand + self.get_assgen_options(layer)
@@ -675,9 +698,11 @@ class meArnoldRender ( object ) :
 
 				if exportAllRenderLayers:
 					# restore current layer
-					cmds.editRenderLayerGlobals(
-						currentRenderLayer=current_layer
-					)
+					rs = renderSetup.instance()
+					if layer == "defaultRenderLayer":
+						rs.switchToLayerUsingLegacyName(layer)
+					else:
+						rs.switchToLayer(rs.getRenderLayer(layer))
 
 	def submitJob ( self, param=None ) :
 		"""
@@ -750,11 +775,7 @@ class meArnoldRender ( object ) :
 		self.job.setup()
 
 		# save current layer
-		current_layer = \
-			cmds.editRenderLayerGlobals(
-				q=True,
-				currentRenderLayer=True
-			)
+		current_layer = renderSetup.instance().getVisibleRenderLayer().name()
 
 		if job_dispatcher == 'afanasy':
 			if ass_deferred and not ass_reuse:
@@ -788,16 +809,22 @@ class meArnoldRender ( object ) :
 
 			renderLayers = []
 			if exportAllRenderLayers:
-				renderLayers = getRenderLayersList(True)  # renderable only
+				renderLayers = [x.replace("rs_", "") for x in getRenderLayersList(True)]  # renderable only
 			else:
 				# use only current layer
 				renderLayers.append(current_layer)
 			
 			for layer in renderLayers:
-				cmds.editRenderLayerGlobals(currentRenderLayer=layer)
+				rs = renderSetup.instance()
+				if layer == "defaultRenderLayer":
+					rs.switchToLayerUsingLegacyName(layer)
+				else:
+					rs.switchToLayer(rs.getRenderLayer(layer))
 				layer_name = layer
 				if layer == 'defaultRenderLayer':
 					layer_name = 'masterLayer'
+				else:
+					layer_name = renderSetup.instance().getVisibleRenderLayer().name()
 
 				frame_block = \
 					AfanasyRenderBlock(
@@ -826,7 +853,11 @@ class meArnoldRender ( object ) :
 
 		if exportAllRenderLayers:
 			# restore current layer
-			cmds.editRenderLayerGlobals(currentRenderLayer=current_layer)
+			rs = renderSetup.instance()
+			if layer == "defaultRenderLayer":
+				rs.switchToLayerUsingLegacyName(layer)
+			else:
+				rs.switchToLayer(rs.getRenderLayer(layer))
 
 	def jobFileNameOptionsChanged ( self, name, value ) :
 		"""jobFileNameOptionsChanged
@@ -996,10 +1027,7 @@ class meArnoldRender ( object ) :
 	def renderLayerSelected(self) :
 		"""renderLayerSelected
 		"""
-		self.layer = cmds.editRenderLayerGlobals(
-			query=True,
-			currentRenderLayer=True
-		)
+		self.layer = renderSetup.instance().getVisibleRenderLayer().name()
 
 		if self.layer == 'defaultRenderLayer':
 			self.layer = 'masterLayer'
@@ -1015,10 +1043,7 @@ class meArnoldRender ( object ) :
 	def renderLayerRenamed(self) :
 		"""renderLayerRenamed
 		"""
-		self.layer = cmds.editRenderLayerGlobals(
-			query=True,
-			currentRenderLayer=True
-		)
+		self.layer = renderSetup.instance().getVisibleRenderLayer().name()
 		cmds.evalDeferred(
 			partial(self.updateRenderLayerMenu),
 			lowestPriority=True
@@ -1027,10 +1052,7 @@ class meArnoldRender ( object ) :
 	def renderLayerChanged(self) :
 		"""renderLayerChanged
 		"""
-		self.layer = cmds.editRenderLayerGlobals(
-			query=True,
-			currentRenderLayer=True
-		)
+		renderSetup.instance().getVisibleRenderLayer().name()
 		cmds.evalDeferred(
 			partial(self.updateRenderLayerMenu),
 			lowestPriority=True
@@ -1051,7 +1073,7 @@ class meArnoldRender ( object ) :
 			for item in list_items:
 				cmds.deleteUI(item)
 
-		renderLayers = getRenderLayersList(False)
+		renderLayers = [x.replace("rs_", "") for x in getRenderLayersList(False)]
 		for layer in renderLayers:
 			if layer == 'defaultRenderLayer':
 				layer = 'masterLayer'
@@ -1061,10 +1083,7 @@ class meArnoldRender ( object ) :
 				self.winMain + '|f0|c0|r0|' + 'layer_selector|OptionMenu')
 			)
 
-		self.layer = cmds.editRenderLayerGlobals(
-			query=True,
-			currentRenderLayer=True
-		)
+		self.layer = renderSetup.instance().getVisibleRenderLayer().name()
 
 		if self.layer == 'defaultRenderLayer':
 			self.layer = 'masterLayer'

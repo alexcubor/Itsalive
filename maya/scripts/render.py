@@ -51,17 +51,7 @@ class RenderSetup(QtWidgets.QWidget):  # TODO Add exporter render settings for e
             pm.Attribute(denoiser.variance).set(0.1)
             pm.Attribute(denoiser.outputSuffix).set("_denoise")
             aov_selection = "RGBA or diffuse_direct or diffuse_indirect or specular or sss"
-            def _get_light_groups():
-                # loop over all light groups in the scene
-                lights = cmds.ls(exactType=['pointLight', 'directionalLight', 'spotLight', 'areaLight', 'aiAreaLight',
-                                            'aiSkyDomeLight', 'aiMeshLight', 'aiPhotometricLight'])
-                existing_light_groups = []
-                for light in lights:
-                    light_group = cmds.getAttr(light + ".aiAov")
-                    if light_group != "" and not light_group in existing_light_groups:
-                        existing_light_groups.append(light_group)
-                return existing_light_groups
-            light_groups = _get_light_groups()
+            light_groups = get_light_groups()
             for lg in light_groups:
                 aov_selection += " or RGBA_" + lg
             pm.Attribute(denoiser.layerSelection).set(aov_selection)
@@ -72,7 +62,6 @@ class RenderSetup(QtWidgets.QWidget):  # TODO Add exporter render settings for e
         reload(assembler.commands)
         print(assembler)
         assembler.assembly()
-
 
     @staticmethod
     def export_json(filepath):
@@ -90,3 +79,15 @@ def save_lights():
     filepath = cmds.file(q=True, sn=True)
     shot_dir = filepath.split("/light/")[0]
     cmds.file(shot_dir + "/cache/lights.ma", force=True, options="v=0;", typ="mayaAscii", pr=1, es=1)
+
+    
+def get_light_groups():
+    # loop over all light groups in the scene
+    lights = cmds.ls(exactType=['pointLight', 'directionalLight', 'spotLight', 'areaLight', 'aiAreaLight',
+                                'aiSkyDomeLight', 'aiMeshLight', 'aiPhotometricLight'])
+    existing_light_groups = []
+    for light in lights:
+        light_group = cmds.getAttr(light + ".aiAov")
+        if light_group != "" and not light_group in existing_light_groups:
+            existing_light_groups.append(light_group)
+    return existing_light_groups
