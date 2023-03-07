@@ -74,6 +74,7 @@ class meArnoldRender ( object ) :
 
 		if cmds.getAttr('defaultRenderGlobals.currentRenderer') != 'arnold':
 			cmds.setAttr("defaultRenderGlobals.currentRenderer", "arnold", type="string")
+		cmds.setAttr("defaultArnoldRenderOptions.autotx", 0)
 		import render
 		if len(render.get_light_groups()) != len([x for x in cmds.ls(type="aiAOV") if "aiAOV_light_" in x]):
 			result = cmds.confirmDialog(title='Warning LightGroup', message="Some new lightgroups do not add to custom "
@@ -82,7 +83,14 @@ class meArnoldRender ( object ) :
 			if result == "Add AOVs":
 				from batch.assembler import commands
 				commands.aovs.RGBA_without_specular.do()
-
+				# Off test AOV light groups
+				if cmds.ls("aiAOV_RGBA"):
+					cmds.delete(cmds.ls("aiAOV_RGBA")[0])
+		if not cmds.getAttr("defaultArnoldRenderOptions.motion_blur_enable"):
+			result = cmds.confirmDialog(title='Warning Motion Blur', message="Motion Blur is disable! Enable?",
+										button=["Enable", "Skip"], defaultButton='Enable')
+			if result == "Enable":
+				cmds.setAttr("defaultArnoldRenderOptions.motion_blur_enable", 1)
 		self.rootDir = cmds.workspace(q=True, rootDirectory=True)
 		self.rootDir = self.rootDir[:-1]
 		self.layer = renderSetup.instance().getVisibleRenderLayer().name()

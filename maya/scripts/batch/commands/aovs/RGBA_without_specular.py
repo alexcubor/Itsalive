@@ -26,3 +26,4 @@ def do():
         if "aiAOV_light_" in aov:
             if aov.split("aiAOV_light_")[-1] not in light_groups:
                 cmds.delete(aov)
+
