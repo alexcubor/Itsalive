@@ -26,6 +26,7 @@ def collect(project=None, episode=None, scene=None, shot=None, version=1):
     parser.add_argument("-ep", help="Episode")
     parser.add_argument("-sc", help="Scene")
     parser.add_argument("-sh", help="Shot")
+    parser.add_argument("-v", help="Version")
     args, unknown = parser.parse_known_args()
     if not project:
         project = args.p
@@ -35,6 +36,8 @@ def collect(project=None, episode=None, scene=None, shot=None, version=1):
         scene = args.sc
     if not shot:
         shot = args.sh
+    if args.v:
+        version = int(args.v)
     sequence_paths = []
     projects_path = lconfig.projects_path()
     shot_dir = os.path.join(projects_path, project, "episodes", episode, scene, shot).replace("\\", "/")
@@ -70,15 +73,19 @@ def collect(project=None, episode=None, scene=None, shot=None, version=1):
     print("[Itsalive] Успех! Превью сохранена в %s" % mov)
 
 
-os.environ["PROJECT_NAME"] = "3033"
-episode = "ep01"
-ep_dir = os.path.join(lconfig.projects_path(), os.environ["PROJECT_NAME"], "episodes", episode).replace("\\", "/")
-for scene in os.listdir(ep_dir):
-    shot_dir = ep_dir + "/" + scene
-    if not os.path.isdir(shot_dir):
-        continue
-    for shot in os.listdir(shot_dir):
-        try:
-            collect(project=os.environ["PROJECT_NAME"], episode=episode, scene=scene, shot=shot, version=1)
-        except:
-            print("Not Find EXRs in " + shot)
+if __name__ is "__mane__":
+    collect()
+
+# #Local test
+# os.environ["PROJECT_NAME"] = "3033"
+# episode = "ep01"
+# ep_dir = os.path.join(lconfig.projects_path(), os.environ["PROJECT_NAME"], "episodes", episode).replace("\\", "/")
+# for scene in os.listdir(ep_dir):
+#     shot_dir = ep_dir + "/" + scene
+#     if not os.path.isdir(shot_dir):
+#         continue
+#     for shot in os.listdir(shot_dir):
+#         try:
+#             collect(project=os.environ["PROJECT_NAME"], episode=episode, scene=scene, shot=shot, version=1)
+#         except:
+#             print("Not Find EXRs in " + shot)

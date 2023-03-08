@@ -857,7 +857,51 @@ class meArnoldRender ( object ) :
 				
 				self.job.frames_blocks.append(frame_block)
 
-			self.job.process()
+			# Mov generate
+			self.job.mov_block = \
+				AfanasyRenderBlock(
+					'create_mov',
+					"generic",
+					self.job,
+					ass_local_assgen
+				)
+			self.job.mov_block.capacity = deferred_capacity
+			split_path = [x for x in cmds.file(sn=1, q=1).split("/") if x]
+			ep = split_path[4]
+			sc = split_path[5]
+			sh = split_path[6]
+			v = int(re.findall(r".(\d\d\d\d).", split_path[-1])[0])
+			command = "python //alpha/tools/Itsalive/maya/start.py " \
+									 "//alpha/tools/Itsalive/ffmpeg/render_preview.py " \
+									 "-p %s -ep %s -sc %s -sh %s -v %s" % (os.environ["PROJECT_NAME"], ep, sc, sh, v)
+			self.job.mov_block.cmd = command
+			shot_dir = cmds.file(sn=1, q=1).rsplit("/", 3)[0] + "/render/maya"
+			mov = shot_dir + "/preview/%s_render_v%03d.mov" % (sh, v)
+			self.job.mov_block.out_files = '"%s"' % mov
+			self.job.mov_block.setup()
+			self.job.mov_block.af_block.setNumeric(1, 1, 1, 1)
+			# End mov generate
+
+			"""AfanasyRenderJob process
+			"""
+			print('>> AfanasyJob process...')
+			gen_block_exists = False
+			if self.job.gen_block is not None:
+				gen_block_exists = True
+				self.job.af_job.blocks.append(self.job.gen_block.af_block)
+			depend_mask = self.job.gen_block.name
+			for frame_block in self.job.frames_blocks:
+				if gen_block_exists:
+					frame_block.af_block.setTasksDependMask(self.job.gen_block.name)
+				self.job.af_job.blocks.append(frame_block.af_block)
+				depend_mask += "|" + frame_block.name
+			self.job.mov_block.af_block.setTasksDependMask(depend_mask)
+			self.job.af_job.blocks.append(self.job.mov_block.af_block)
+
+			if self.job.paused:
+				self.job.af_job.offline()
+			self.job.af_job.output()
+			self.job.af_job.send()
 
 		if exportAllRenderLayers:
 			# restore current layer
