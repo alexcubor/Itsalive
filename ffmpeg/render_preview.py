@@ -79,7 +79,7 @@ def collect(project=None, episode=None, scene=None, shot=None, version=1):
     if os.path.isfile(mov):
         print("[Itsalive] Успех! Превью сохранена в %s" % mov)
         mov_name = os.path.basename(mov)
-        shutil.copyfile(mov, os.path.join(projects_path, project, "previews", re.sub(r"_v\d\d\d", "", mov_name)))
+        shutil.copyfile(mov, os.path.join(projects_path, project, "episodes", episode, "preview", re.sub(r"_v\d\d\d", "", mov_name.replace("render", "r"))))
     else:
         print("[Itsalive] Что то пошло не так!")
 
