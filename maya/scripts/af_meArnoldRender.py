@@ -860,7 +860,7 @@ class meArnoldRender ( object ) :
 			# Mov generate
 			self.job.mov_block = \
 				AfanasyRenderBlock(
-					'create_mov',
+					'render_preview',
 					"generic",
 					self.job,
 					ass_local_assgen
