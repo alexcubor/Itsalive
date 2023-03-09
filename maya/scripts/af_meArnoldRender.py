@@ -871,11 +871,10 @@ class meArnoldRender ( object ) :
 			sc = split_path[5]
 			sh = split_path[6]
 			v = int(re.findall(r".(\d\d\d\d).", split_path[-1])[0])
-			command = "python //alpha/tools/Itsalive/maya/start.py " \
-									 "//alpha/tools/Itsalive/ffmpeg/render_preview.py " \
+			command = "python //alpha/tools/Itsalive/ffmpeg/render_preview.py " \
 									 "-p %s -ep %s -sc %s -sh %s -v %s" % (os.environ["PROJECT_NAME"], ep, sc, sh, v)
 			self.job.mov_block.cmd = command
-			shot_dir = cmds.file(sn=1, q=1).rsplit("/", 3)[0] + "/render/maya"
+			shot_dir = cmds.file(sn=1, q=1).rsplit("/", 3)[0]
 			mov = shot_dir + "/preview/%s_render_v%03d.mov" % (sh, v)
 			self.job.mov_block.out_files = '"%s"' % mov
 			self.job.mov_block.setup()

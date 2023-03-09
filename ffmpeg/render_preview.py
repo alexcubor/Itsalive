@@ -4,6 +4,7 @@ import sys
 import argparse
 import glob
 import os
+import shutil
 import re
 from pathlib import Path
 
@@ -21,6 +22,7 @@ except:
 
 
 def collect(project=None, episode=None, scene=None, shot=None, version=1):
+    print("[It's Alive] Start script")
     parser = argparse.ArgumentParser()
     parser.add_argument("-p", help="Project")
     parser.add_argument("-ep", help="Episode")
@@ -42,10 +44,11 @@ def collect(project=None, episode=None, scene=None, shot=None, version=1):
     projects_path = lconfig.projects_path()
     shot_dir = os.path.join(projects_path, project, "episodes", episode, scene, shot).replace("\\", "/")
 
-    # Find UE-exr
+    ## Find UE-exr
     #ue_dir = shot_dir + "/render/UE"
     #last_version = sorted(os.listdir(ue_dir))[-1]
     #ue_last_version_dir = ue_dir + "/" + last_version
+    #start_frame = re.findall(r".(\d\d\d\d).", os.listdir(ue_last_version_dir)[0])[0]
     #filename = re.sub(r".\d\d\d\d.", ".%04d.", os.listdir(ue_last_version_dir)[0])
     #ue_exr = ue_last_version_dir + "/" + filename
     #sequence_paths.append(ue_exr)
@@ -65,16 +68,25 @@ def collect(project=None, episode=None, scene=None, shot=None, version=1):
     ffmpeg_exe = str(Path((__file__)).parent.parent.parent.joinpath(r"ffmpeg\bin\ffmpeg.exe"))
     command = [ffmpeg_exe]
     for sequence in sequence_paths:
-        command += ["-start_number", start_frame if "UE" not in sequence else "0001", "-apply_trc", "iec61966_2_1", "-i", os.path.normpath(sequence), "-vf", "colormatrix=bt709:bt601"]
+        command += ["-start_number", start_frame, "-apply_trc", "iec61966_2_1", "-i", os.path.normpath(sequence), "-vf", "colormatrix=bt709:bt601"]
     mov = shot_dir + "/preview/%s_render_v%03d.mov" % (shot, version)
+    if not os.path.isdir(os.path.dirname(mov)):
+        os.makedirs(os.path.dirname(mov))
     command += ["-c:v", "libx264", "-y", mov]
-    print("Run command", command)
+    #command += ["-filter_complex", "[0:v]copy[out];[out]", "-c:v", "libx264", "-y", mov]
+    print("Run command", " ".join(command))
     subprocess.run(command)
-    print("[Itsalive] Успех! Превью сохранена в %s" % mov)
+    if os.path.isfile(mov):
+        print("[Itsalive] Успех! Превью сохранена в %s" % mov)
+        mov_name = os.path.basename(mov)
+        shutil.copyfile(mov, os.path.join(projects_path, project, "previews", re.sub(r"_v\d\d\d", "", mov_name)))
+    else:
+        print("[Itsalive] Что то пошло не так!")
 
 
-if __name__ is "__mane__":
+if __name__ == "__main__":
     collect()
+
 
 # #Local test
 # os.environ["PROJECT_NAME"] = "3033"
