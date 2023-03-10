@@ -72,7 +72,7 @@ def collect(project=None, episode=None, scene=None, shot=None, version=1):
     mov = shot_dir + "/preview/%s_render_v%03d.mov" % (shot, version)
     if not os.path.isdir(os.path.dirname(mov)):
         os.makedirs(os.path.dirname(mov))
-    command += ["-c:v", "libx264", "-y", mov]
+    command += ["-r", "24", "-c:v", "libx264", "-y", mov]
     #command += ["-filter_complex", "[0:v]copy[out];[out]", "-c:v", "libx264", "-y", mov]
     print("Run command", " ".join(command))
     subprocess.run(command)
