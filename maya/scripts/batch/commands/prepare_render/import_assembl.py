@@ -12,10 +12,9 @@ def do():
         task_fields = lconfig.task_fields(cmds.file(q=True, sn=True))
         assembl_dir = os.path.join(lconfig.project_path(), "episodes", task_fields["episode"], task_fields["scene"],
                                 task_fields["shot"], "assembl").replace("\\", "/")
-        print("[DEBUG] Find assembl scene", assembl_dir + "/*_B.mb")
-        assembl_paths = glob.glob(assembl_dir + "/*_B.mb")
+        assembl_paths = glob.glob(assembl_dir + "/*_b.m*")
+        print("[DEBUG] Find assembl scene", assembl_paths)
         if assembl_paths:
-            print("[DEBUG] Found %s" % assembl_paths[-1])
             if os.path.isfile(assembl_paths[-1]):
                 base_name = os.path.basename(assembl_paths[-1])
                 name, ext = os.path.splitext(base_name)
