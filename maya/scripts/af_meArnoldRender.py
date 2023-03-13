@@ -675,9 +675,9 @@ class meArnoldRender ( object ) :
 					# if layer == 'masterLayer' :
 					#     layer = 'defaultRenderLayer' 
 					saveGlobals['renderableLayer'] = \
-						cmds.getAttr(layer + '.renderable')
+						cmds.getAttr("rs_" + layer + '.renderable')
 
-					cmds.setAttr(layer + '.renderable', True)
+					cmds.setAttr("rs_" + layer + '.renderable', True)
 					# print 'set current layer renderable (%s)' % layer
 
 					rs = renderSetup.instance()
@@ -700,7 +700,7 @@ class meArnoldRender ( object ) :
 					mel.eval(assgen_cmd)
 
 					cmds.setAttr(
-						layer + '.renderable',
+						"rs_" + layer + '.renderable',
 						saveGlobals['renderableLayer']
 					)
 
