@@ -876,7 +876,7 @@ class meArnoldRender ( object ) :
 			self.job.mov_block.cmd = command
 			shot_dir = cmds.file(sn=1, q=1).rsplit("/", 3)[0]
 			mov = shot_dir + "/preview/%s_render_v%03d.mov" % (sh, v)
-			self.job.mov_block.out_files = '"%s"' % mov
+			self.job.mov_block.out_files = "%s" % mov
 			self.job.mov_block.setup()
 			self.job.mov_block.af_block.setNumeric(1, 1, 1, 1)
 			# End mov generate
