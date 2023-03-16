@@ -83,9 +83,6 @@ class meArnoldRender ( object ) :
 			if result == "Add AOVs":
 				from batch.assembler import commands
 				commands.aovs.RGBA_without_specular.do()
-				# Off test AOV light groups
-				if cmds.ls("aiAOV_RGBA"):
-					cmds.delete(cmds.ls("aiAOV_RGBA")[0])
 		if not cmds.getAttr("defaultArnoldRenderOptions.motion_blur_enable"):
 			result = cmds.confirmDialog(title='Warning Motion Blur', message="Motion Blur is disable! Enable?",
 										button=["Enable", "Skip"], defaultButton='Enable')
