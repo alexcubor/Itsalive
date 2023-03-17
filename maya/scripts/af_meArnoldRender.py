@@ -663,7 +663,7 @@ class meArnoldRender ( object ) :
 				# save current layer
 				current_layer = renderSetup.instance().getVisibleRenderLayer().name()
 				if exportAllRenderLayers:
-					renderLayers = [x.replace("rs_", "") for x in getRenderLayersList(True)]  # renderable only
+					renderLayers = render_setup_layers()  # renderable only
 				else:
 					# use only current layer
 					renderLayers.append(current_layer)
@@ -814,7 +814,7 @@ class meArnoldRender ( object ) :
 
 			renderLayers = []
 			if exportAllRenderLayers:
-				renderLayers = [x.replace("rs_", "") for x in getRenderLayersList(True)]  # renderable only
+				renderLayers = render_setup_layers()  # renderable only
 			else:
 				# use only current layer
 				renderLayers.append(current_layer)
@@ -1121,7 +1121,7 @@ class meArnoldRender ( object ) :
 			for item in list_items:
 				cmds.deleteUI(item)
 
-		renderLayers = [x.replace("rs_", "") for x in getRenderLayersList(False)]
+		renderLayers = render_setup_layers()
 		for layer in renderLayers:
 			if layer == 'defaultRenderLayer':
 				layer = 'masterLayer'
@@ -1168,7 +1168,7 @@ class meArnoldRender ( object ) :
 						layer,
 						'import maya.OpenMaya; '
 						'maya.cmds.evalDeferred('
-						'    "meArnoldRender.renderLayerRenamed()",'
+						'    "af_meArnoldRender.renderLayerRenamed()",'
 						'    lowestPriority=True'
 						')'
 					],
@@ -1211,7 +1211,7 @@ class meArnoldRender ( object ) :
 				'renderLayerManager.currentRenderLayer',
 				'import maya.OpenMaya; '
 				'maya.cmds.evalDeferred('
-				'    "meArnoldRender.renderLayerSelected()",'
+				'    "af_meArnoldRender.renderLayerSelected()",'
 				'    lowestPriority=True'
 				')'
 			],
@@ -1222,7 +1222,7 @@ class meArnoldRender ( object ) :
 				'renderLayerChange',
 				'import maya.OpenMaya; '
 				'maya.cmds.evalDeferred('
-				'    "meArnoldRender.renderLayerChanged()",'
+				'    "af_meArnoldRender.renderLayerChanged()",'
 				'    lowestPriority=True'
 				')'
 			],
@@ -2268,3 +2268,11 @@ class meArnoldRender ( object ) :
 
 
 print('meArnoldRender sourced ...')
+
+
+def render_setup_layers(active=True):
+	render_layers = renderSetup.instance().getRenderLayers()
+	render_layers.append(renderSetup.instance().getDefaultRenderLayer())
+	if active:
+		render_layers = [x.name() for x in render_layers if x.isRenderable()]
+	return render_layers
