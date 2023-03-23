@@ -3,6 +3,7 @@ import os
 
 
 def do():
+    episode = [x for x in cmds.file(sn=True, q=True).split("/") if x][4]
     # Global Arnold
     cmds.setAttr("defaultRenderGlobals.currentRenderer", "arnold", type="string")
     cmds.setAttr("defaultArnoldDriver.halfPrecision", 1)
@@ -12,11 +13,17 @@ def do():
     # cmds.setAttr("defaultArnoldRenderOptions.motion_blur_enable", 1)
     cmds.setAttr("defaultArnoldRenderOptions.abortOnError", 0)
     # Sampling and Ray Depth
-    cmds.setAttr("defaultArnoldRenderOptions.AASamples", 8)
+    if episode == "ep02":
+        cmds.setAttr("defaultArnoldRenderOptions.AASamples", 8)
+    else:
+        cmds.setAttr("defaultArnoldRenderOptions.AASamples", 7)
     cmds.setAttr("defaultArnoldRenderOptions.GITransmissionDepth", 4)
     cmds.setAttr("defaultArnoldRenderOptions.autoTransparencyDepth", 4)
-    cmds.setAttr("defaultArnoldRenderOptions.enableAdaptiveSampling", 1)
     cmds.setAttr("defaultArnoldRenderOptions.AASamplesMax", 9)
+    if episode == "ep02":
+        cmds.setAttr("defaultArnoldRenderOptions.enableAdaptiveSampling", 1)
+    else:
+        cmds.setAttr("defaultArnoldRenderOptions.enableAdaptiveSampling", 0)
     # Resolution
     cmds.setAttr("defaultResolution.width", 2048)
     cmds.setAttr("defaultResolution.height", 858)

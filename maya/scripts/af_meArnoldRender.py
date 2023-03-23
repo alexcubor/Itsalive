@@ -395,7 +395,7 @@ class meArnoldRender ( object ) :
 		separator = self.job_param['job_separator']
 		if separator == 'none' :
 			separator = ''
-			
+
 		filename = self.ass_param['ass_dirname']
 		if layer is not None:
 			if layer == 'defaultRenderLayer':
@@ -409,7 +409,8 @@ class meArnoldRender ( object ) :
 		scenename = getMayaSceneName()
 
 		if ass_deferred:
-			scenename += '_deferred'
+			episode = [x for x in cmds.file(sn=True, q=True).split("/") if x][4]
+			scenename = episode + "_" + scenename + '_deferred'
 			#scenename, ext = os.path.splitext(
 			#	os.path.basename(self.def_scene_name)
 			#)
@@ -436,7 +437,7 @@ class meArnoldRender ( object ) :
 			if self.ass_param['ass_compressed'] :
 				# !!! There is error in maya translator 
 				# for "defaultArnoldRenderOptions.output_ass_compressed" flag
-				if not ass_deferred : 
+				if not ass_deferred :
 					filename += '.gz'
 
 		return filename
@@ -625,7 +626,8 @@ class meArnoldRender ( object ) :
 			# output_ass_filename using STATIC deferred filename from RenderGlobals
 			#
 			scene_name = getMayaSceneName(withoutSubdir=True)
-			cmds.setAttr(aiGlobals + '.output_ass_filename', scene_name + '_deferred', type='string' )
+			episode = [x for x in cmds.file(sn=True, q=True).split("/") if x][4]
+			cmds.setAttr(aiGlobals + '.output_ass_filename', episode + "_" + scene_name + '_deferred', type='string' )
 
 			cmds.workspace( fileRule=('ASS',self.ass_param['ass_dirname']) )
 			cmds.workspace( saveWorkspace=True )
