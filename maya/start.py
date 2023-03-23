@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
-import argparse
 import os
 import sys
 import platform
 import subprocess
 from pathlib import Path
-import argparse
 import shutil
 import re
 
@@ -36,7 +34,7 @@ class App(object):
         self.plugins_path = os.path.dirname(__file__).replace("\\", "/") + "/plugins"
         if not os.getenv("PROJECT_NAME"):
             os.environ["PROJECT_NAME"] = "3033"
-        put_env("MAYA_PRESET_PATH", "//alpha/projects/" + os.environ["PROJECT_NAME"])
+        put_env("MAYA_PRESET_PATH", "//alpha/projects/" + os.environ["PROJECT_NAME"] + "/library/maya/presets")
         if os.getenv("PYTHONHOME"):
             del os.environ["PYTHONHOME"]
         if self.app_name != "Render":
@@ -45,6 +43,11 @@ class App(object):
         self.install_deadline()
         self.install_studio_library()
         self.install_megascan_livelink()
+        self.install_checker()
+
+    @staticmethod
+    def install_checker():
+        put_env("PYTHONPATH", os.getenv("TOOLS_PATH") + "/Checker")
 
     @staticmethod
     def install_cerebro():
