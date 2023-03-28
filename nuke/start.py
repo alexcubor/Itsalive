@@ -16,13 +16,17 @@ class App(object):
         os.environ["TOOLS_PATH"] = str(Path(os.path.dirname(__file__)).parent.parent).replace("\\", "/")
         print("[It's alive] Start tools from " + os.environ["TOOLS_PATH"])
         print("[It's alive] Nuke initialization...")
-        self.location = {"Windows": "C:/Program Files/Nuke13.2v5"}[platform.system()]
-        self.install_cgru()
+        self.location = {"Windows": "C:/Program Files/Nuke13.2v5",
+                         "Darwin": "/Applications/Nuke13.1v1"}[platform.system()]
+        try:
+            self.install_cgru()
+        except:
+            pass
 
     @staticmethod
     def install_cgru():
         cgru_version = "3.3.0"
-        os.environ['CGRU_LOCATION'] = "C:/cgru." + cgru_version
+        os.environ['CGRU_LOCATION'] = {"Windows": "C:/cgru." + cgru_version}[platform.system()]
         put_env("NUKE_PATH", os.environ['CGRU_LOCATION'] + "/plugins/nuke")
         put_env("NUKE_PATH", os.path.dirname(__file__))
         put_env("NUKE_CGRU_PATH", os.environ['CGRU_LOCATION'] + "/plugins/nuke")
@@ -46,7 +50,7 @@ class App(object):
 
     # Запуск приложения
     def run(self):
-        app_name = {'Windows': 'Nuke13.2.exe'}[platform.system()]
+        app_name = {'Windows': 'Nuke13.2.exe', "Darwin": "Nuke13.1v1.app/Contents/MacOS/Nuke13.1"}[platform.system()]
         app_path = os.path.join(self.location, app_name)
         p = subprocess.Popen([app_path, "--nukex"])
         wait = p.wait()
