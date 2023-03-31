@@ -59,7 +59,8 @@
     "project_path": [
         {
             "paths": [
-                "//alpha/projects/3033"
+                "//alpha/projects/3033",
+                "/Volumes/projects/3033"
             ],
             "project_name": "",
             "task_activity": ""
