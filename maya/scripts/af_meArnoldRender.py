@@ -51,7 +51,7 @@ ar_verbosity_list = [
 class meArnoldRender ( object ) :
 	"""
 	meArnoldRender
-	
+
 	"""
 	def __init__ (self, NoGUI = False) :
 		"""
@@ -74,20 +74,24 @@ class meArnoldRender ( object ) :
 
 		if cmds.getAttr('defaultRenderGlobals.currentRenderer') != 'arnold':
 			cmds.setAttr("defaultRenderGlobals.currentRenderer", "arnold", type="string")
-		cmds.setAttr("defaultArnoldRenderOptions.autotx", 0)
-		import render
-		if len(render.get_light_groups()) != len([x for x in cmds.ls(type="aiAOV") if "aiAOV_light_" in x]):
-			result = cmds.confirmDialog(title='Warning LightGroup', message="Some new lightgroups do not add to custom "
-																			"AOVs 'light_*'. Can you create custom AOVs?",
-							   			button=["Add AOVs", "Skip"], defaultButton='Add AOVs')
-			if result == "Add AOVs":
-				from batch.assembler import commands
-				commands.aovs.RGBA_without_specular.do()
-		if not cmds.getAttr("defaultArnoldRenderOptions.motion_blur_enable"):
-			result = cmds.confirmDialog(title='Warning Motion Blur', message="Motion Blur is disable! Enable?",
-										button=["Enable", "Skip"], defaultButton='Enable')
-			if result == "Enable":
-				cmds.setAttr("defaultArnoldRenderOptions.motion_blur_enable", 1)
+		#cmds.setAttr("defaultArnoldRenderOptions.autotx", 0)
+		#import render
+		#if len(render.get_light_groups()) != len([x for x in cmds.ls(type="aiAOV") if "aiAOV_light_" in x]):
+		#	result = cmds.confirmDialog(title='Warning LightGroup', message="Some new lightgroups do not add to custom "
+		#																	"AOVs 'light_*'. Can you create custom AOVs?",
+		#					   			button=["Add AOVs", "Skip"], defaultButton='Add AOVs')
+		#	if result == "Add AOVs":
+		#		from batch.assembler import commands
+		#		commands.aovs.RGBA_without_specular.do()
+		#if not cmds.getAttr("defaultArnoldRenderOptions.motion_blur_enable"):
+		#	result = cmds.confirmDialog(title='Warning Motion Blur', message="Motion Blur is disable! Enable?",
+		#								button=["Enable", "Skip"], defaultButton='Enable')
+		#	if result == "Enable":
+		#		cmds.setAttr("defaultArnoldRenderOptions.motion_blur_enable", 1)
+		renderable_cameras = [x for x in cmds.ls(type="camera") if cmds.getAttr(x + ".renderable")]
+		if len(renderable_cameras) > 1:
+			cmds.warning('More then one renderable cameras! Check render settings.')
+			return
 		self.rootDir = cmds.workspace(q=True, rootDirectory=True)
 		self.rootDir = self.rootDir[:-1]
 		self.layer = renderSetup.instance().getVisibleRenderLayer().name()
@@ -172,7 +176,7 @@ class meArnoldRender ( object ) :
 		self.ass_param['ass_reuse'] = \
 			getDefaultIntValue(self_prefix, 'ass_reuse', 0) is 1
 
-		ass_dirname = "//alpha/projects/3033/tmp/ass"
+		ass_dirname = "//alpha/projects/tmp/ass"
 		if ass_dirname == '':
 			ass_dirname = 'ass'
 			cmds.workspace(fileRule=('ASS', ass_dirname))
@@ -414,15 +418,6 @@ class meArnoldRender ( object ) :
 			#scenename, ext = os.path.splitext(
 			#	os.path.basename(self.def_scene_name)
 			#)
-
-		renderable_cameras = [cmds.listRelatives(x, p=1)[0].replace(":", "_")
-							  for x in cmds.ls(type="camera") if cmds.getAttr(x + ".renderable")]
-		if len(renderable_cameras) > 1:
-			main_camera = None
-			for cam in cmds.ls(type="camera"):
-				if ":cam" in cam.lower():
-					main_camera = cam
-			filename += "/" + main_camera
 
 		filename += '/%s' % scenename
 		#filename = cmds.workspace(expandName=filename)
@@ -857,28 +852,31 @@ class meArnoldRender ( object ) :
 				self.job.frames_blocks.append(frame_block)
 
 			# Mov generate
-			self.job.mov_block = \
-				AfanasyRenderBlock(
-					'render_preview',
-					"generic",
-					self.job,
-					ass_local_assgen
-				)
-			self.job.mov_block.capacity = deferred_capacity
-			split_path = [x for x in cmds.file(sn=1, q=1).split("/") if x]
-			ep = split_path[4]
-			sc = split_path[5]
-			sh = split_path[6]
-			v = int(re.findall(r".(\d\d\d\d).", split_path[-1])[0])
-			command = "python //alpha/tools/Itsalive/ffmpeg/render_preview.py " \
-									 "-p %s -ep %s -sc %s -sh %s -v %s" % (os.environ["PROJECT_NAME"], ep, sc, sh, v)
-			self.job.mov_block.cmd = command
-			shot_dir = cmds.file(sn=1, q=1).rsplit("/", 3)[0]
-			mov = shot_dir + "/preview/%s_render_v%03d.mov" % (sh, v)
-			self.job.mov_block.out_files = "%s" % mov
-			self.job.mov_block.setup()
-			self.job.mov_block.af_block.setNumeric(1, 1, 1, 1)
-			# End mov generate
+			try:
+				self.job.mov_block = \
+					AfanasyRenderBlock(
+						'render_preview',
+						"generic",
+						self.job,
+						ass_local_assgen
+					)
+				self.job.mov_block.capacity = deferred_capacity
+				split_path = [x for x in cmds.file(sn=1, q=1).split("/") if x]
+				ep = split_path[4]
+				sc = split_path[5]
+				sh = split_path[6]
+				v = int(re.findall(r".(\d\d\d\d).", split_path[-1])[0])
+				command = "python //alpha/tools/Itsalive/ffmpeg/render_preview.py " \
+										 "-p %s -ep %s -sc %s -sh %s -v %s" % (os.environ["PROJECT_NAME"], ep, sc, sh, v)
+				self.job.mov_block.cmd = command
+				shot_dir = cmds.file(sn=1, q=1).rsplit("/", 3)[0]
+				mov = shot_dir + "/preview/%s_render_v%03d.mov" % (sh, v)
+				self.job.mov_block.out_files = "%s" % mov
+				self.job.mov_block.setup()
+				self.job.mov_block.af_block.setNumeric(1, 1, 1, 1)
+				# End mov generate
+			except:
+				pass
 
 			"""AfanasyRenderJob process
 			"""
@@ -893,8 +891,11 @@ class meArnoldRender ( object ) :
 					frame_block.af_block.setTasksDependMask(self.job.gen_block.name)
 				self.job.af_job.blocks.append(frame_block.af_block)
 				depend_mask += "|" + frame_block.name
-			self.job.mov_block.af_block.setTasksDependMask(depend_mask)
-			self.job.af_job.blocks.append(self.job.mov_block.af_block)
+			try:
+				self.job.mov_block.af_block.setTasksDependMask(depend_mask)
+				self.job.af_job.blocks.append(self.job.mov_block.af_block)
+			except:
+				pass
 
 			if self.job.paused:
 				self.job.af_job.offline()
