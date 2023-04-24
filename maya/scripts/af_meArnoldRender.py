@@ -852,31 +852,28 @@ class meArnoldRender ( object ) :
 				self.job.frames_blocks.append(frame_block)
 
 			# Mov generate
-			try:
-				self.job.mov_block = \
-					AfanasyRenderBlock(
-						'render_preview',
-						"generic",
-						self.job,
-						ass_local_assgen
-					)
-				self.job.mov_block.capacity = deferred_capacity
-				split_path = [x for x in cmds.file(sn=1, q=1).split("/") if x]
-				ep = split_path[4]
-				sc = split_path[5]
-				sh = split_path[6]
-				v = int(re.findall(r".(\d\d\d\d).", split_path[-1])[0])
-				command = "python //alpha/tools/Itsalive/ffmpeg/render_preview.py " \
-										 "-p %s -ep %s -sc %s -sh %s -v %s" % (os.environ["PROJECT_NAME"], ep, sc, sh, v)
-				self.job.mov_block.cmd = command
-				shot_dir = cmds.file(sn=1, q=1).rsplit("/", 3)[0]
-				mov = shot_dir + "/preview/%s_render_v%03d.mov" % (sh, v)
-				self.job.mov_block.out_files = "%s" % mov
-				self.job.mov_block.setup()
-				self.job.mov_block.af_block.setNumeric(1, 1, 1, 1)
-				# End mov generate
-			except:
-				pass
+			#self.job.mov_block = \
+			#	AfanasyRenderBlock(
+			#		'render_preview',
+			#		"generic",
+			#		self.job,
+			#		ass_local_assgen
+			#	)
+			#self.job.mov_block.capacity = deferred_capacity
+			#split_path = [x for x in cmds.file(sn=1, q=1).split("/") if x]
+			#ep = split_path[4]
+			#sc = split_path[5]
+			#sh = split_path[6]
+			#v = int(re.findall(r".(\d\d\d\d).", split_path[-1])[0])
+			#command = "python //alpha/tools/Itsalive/ffmpeg/render_preview.py " \
+			#						 "-p %s -ep %s -sc %s -sh %s -v %s" % (os.environ["PROJECT_NAME"], ep, sc, sh, v)
+			#self.job.mov_block.cmd = command
+			#shot_dir = cmds.file(sn=1, q=1).rsplit("/", 3)[0]
+			#mov = shot_dir + "/preview/%s_render_v%03d.mov" % (sh, v)
+			#self.job.mov_block.out_files = "%s" % mov
+			#self.job.mov_block.setup()
+			#self.job.mov_block.af_block.setNumeric(1, 1, 1, 1)
+			# End mov generate
 
 			"""AfanasyRenderJob process
 			"""
@@ -891,11 +888,8 @@ class meArnoldRender ( object ) :
 					frame_block.af_block.setTasksDependMask(self.job.gen_block.name)
 				self.job.af_job.blocks.append(frame_block.af_block)
 				depend_mask += "|" + frame_block.name
-			try:
-				self.job.mov_block.af_block.setTasksDependMask(depend_mask)
-				self.job.af_job.blocks.append(self.job.mov_block.af_block)
-			except:
-				pass
+			#self.job.mov_block.af_block.setTasksDependMask(depend_mask)
+			#self.job.af_job.blocks.append(self.job.mov_block.af_block)
 
 			if self.job.paused:
 				self.job.af_job.offline()
