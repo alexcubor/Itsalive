@@ -15,8 +15,9 @@ import re
 class App(object):
     def __init__(self):
         self.args = sys.argv[1:]
-        os.environ["PROJECT_NAME"] = sys.argv[sys.argv.index("-p") + 1]
-        self.args.remove("-p"), self.args.remove(os.environ["PROJECT_NAME"])
+        if "-p" in sys.argv:
+            os.environ["PROJECT_NAME"] = sys.argv[sys.argv.index("-p") + 1]
+            self.args.remove("-p"), self.args.remove(os.environ["PROJECT_NAME"])
         if "-app" in sys.argv:
             self.app_name = sys.argv[sys.argv.index("-app") + 1]
             self.args.remove("-app"), self.args.remove(self.app_name)
@@ -32,9 +33,8 @@ class App(object):
         put_env("PATH", os.environ["MAYA_LOCATION"] + "/bin")
         put_env("MAYA_MODULE_PATH", os.path.dirname(__file__))
         self.plugins_path = os.path.dirname(__file__).replace("\\", "/") + "/plugins"
-        if not os.getenv("PROJECT_NAME"):
-            os.environ["PROJECT_NAME"] = "3033"
-        put_env("MAYA_PRESET_PATH", "//alpha/projects/" + os.environ["PROJECT_NAME"] + "/library/maya/presets")
+        if os.getenv("PROJECT_NAME"):
+            put_env("MAYA_PRESET_PATH", "//alpha/projects/" + os.environ["PROJECT_NAME"] + "/library/maya/presets")
         if os.getenv("PYTHONHOME"):
             del os.environ["PYTHONHOME"]
         if self.app_name != "Render":
