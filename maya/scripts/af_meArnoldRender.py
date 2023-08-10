@@ -48,6 +48,8 @@ ar_verbosity_list = [
 	'details'
 ]
 
+os.environ["PROJECT_NAME"] = os.path.basename(cmds.workspace(q=True, fullName=True))
+
 class meArnoldRender ( object ) :
 	"""
 	meArnoldRender
