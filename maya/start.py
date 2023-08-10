@@ -40,7 +40,6 @@ class App(object):
         if self.app_name != "Render":
             self.install_cerebro()
         self.install_cgru()
-        self.install_deadline()
         self.install_studio_library()
         self.install_megascan_livelink()
         self.install_checker()
@@ -111,13 +110,6 @@ class App(object):
             pyset.write(codefix)
             pyset.close()
         _fix()
-
-    @staticmethod
-    def install_deadline():
-        deadline_work_path = "//alpha/tools/Deadline_repo"
-        deadline_maya_path = deadline_work_path + "/submission/Maya/Client"
-        put_env("MAYA_MODULE_PATH", deadline_maya_path + "/AllUsers")
-        print("[It's alive] Install Deadline ")
 
     @staticmethod
     def install_studio_library():
