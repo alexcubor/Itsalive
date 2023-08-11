@@ -35,6 +35,56 @@ class App(object):
         self.plugins_path = os.path.dirname(__file__).replace("\\", "/") + "/plugins"
         self.install_studio_library()
         self.install_megascan_livelink()
+        self.install_cgru()
+
+    @staticmethod
+    def install_cgru():
+        cgru_version = "3.3.0"
+        os.environ['CGRU_LOCATION'] = "C:/cgru." + cgru_version
+        os.environ["MAYA_CGRU_LOCATION"] = os.environ['CGRU_LOCATION'] + "/plugins/maya"
+        os.environ["MAYA_CGRU_MENUS_NAME"] = "CGRU"
+        put_env("MAYA_SCRIPT_PATH", os.environ["MAYA_CGRU_LOCATION"] + "/mel/AETemplates")
+        # put_env("MAYA_PLUG_IN_PATH", os.environ["MAYA_CGRU_LOCATION"] + "/mll/" + os.environ["MAYA_VERSION"])
+        os.environ["XBMLANGPATH"] = os.environ["MAYA_CGRU_LOCATION"] + "/icons"
+        # sys.path.append(os.environ["MAYA_CGRU_LOCATION"] + "/afanasy/python")
+        # sys.path.append(os.environ["MAYA_CGRU_LOCATION"] + "/lib/python")
+        put_env("PYTHONPATH", os.environ["MAYA_CGRU_LOCATION"] + "/afanasy")
+        put_env("PYTHONPATH", os.environ["CGRU_LOCATION"] + "/lib/python")
+        put_env("PYTHONPATH", os.environ['CGRU_LOCATION'] + "/afanasy/python")
+        put_env("PYTHONPATH", os.environ['CGRU_LOCATION'] + "/plugins/maya")
+        put_env("PYTHONPATH", os.environ['CGRU_LOCATION'] + "/plugins/maya/afanasy")
+        print("[It's alive] Install CGRU " + cgru_version)
+
+        def _fix():
+            pyfile = os.environ["MAYA_CGRU_LOCATION"] + "/afanasy/__init__.py"
+            if not os.path.isfile(pyfile):
+                return
+            pyread = open(pyfile, 'r')
+            code = pyread.read()
+            template = """cmd_buffer.append('-proj "%s"' % os.path.normpath(self.project))"""
+            if template not in code:
+                return  # Значит код уже исправлен
+            codefix = code.replace(template, """cmd_buffer.append('-proj "%s"' % self.project)""")
+            pyread.close()
+            pyset = open(pyfile, 'w')
+            pyset.write(codefix)
+            pyset.close()
+
+            pyfile = os.environ["MAYA_CGRU_LOCATION"] + "/afanasy/maya_ui_proc.py"
+            if not os.path.isfile(pyfile):
+                return
+            pyread = open(pyfile, 'r')
+            code = pyread.read()
+            template = "	labels.reverse()"
+            if template not in code:
+                return  # Значит код уже исправлен
+            codefix = code.replace(template, "	#labels.reverse()")
+            pyread.close()
+            pyset = open(pyfile, 'w')
+            pyset.write(codefix)
+            pyset.close()
+
+        _fix()
 
     @staticmethod
     def install_studio_library():
